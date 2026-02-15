@@ -1,192 +1,636 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Gaia — AI-Driven Subsurface Intelligence</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AX GAIA Intelligence — Gaia</title>
+  <meta name="description" content="AX GAIA Intelligence (est. 2026) — Gaia: AI-driven, non-invasive, space-enabled subsurface intelligence for construction and infrastructure." />
 
-<meta name="description" content="Gaia is an AI-driven subsurface intelligence system developed by AX GAIA Intelligence, fusing Sentinel-1 DInSAR and on-site GPR for early-stage geotechnical decision support.">
+  <style>
+    :root{
+      --bg0:#000000;
+      --bg1:#070b14;
+      --card: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.14);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.70);
+      --blue1:#1e90ff;
+      --blue2:#0066ff;
+      --radius:18px;
+      --shadow: 0 18px 60px rgba(0,0,0,0.55);
+      --max: 1100px;
+    }
 
-<style>
-:root{
-  --bg0:#000000;
-  --bg1:#070b14;
-  --card: rgba(255,255,255,0.06);
-  --border: rgba(255,255,255,0.12);
-  --text: rgba(255,255,255,0.92);
-  --muted: rgba(255,255,255,0.72);
-  --blue1:#1e90ff;
-  --blue2:#0066ff;
-  --radius:20px;
-  --shadow:0 20px 60px rgba(0,0,0,0.55);
-  --max:1000px;
-}
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
 
-*{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text);
+      background:
+        radial-gradient(900px 380px at 50% 0%, rgba(30,144,255,0.20), transparent 55%),
+        radial-gradient(900px 520px at 50% 100%, rgba(0,102,255,0.12), transparent 60%),
+        linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 100%);
+    }
 
-body{
-  margin:0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-  color:var(--text);
-  background:
-    radial-gradient(900px 380px at 50% 0%, rgba(30,144,255,0.20), transparent 55%),
-    radial-gradient(900px 520px at 50% 100%, rgba(0,102,255,0.12), transparent 60%),
-    linear-gradient(180deg,var(--bg0) 0%,var(--bg1) 100%);
-  display:flex;
-  justify-content:center;
-  padding:40px 20px;
-}
+    a{ color:inherit; }
+    .wrap{ width: min(var(--max), 100%); margin: 0 auto; padding: 0 18px; }
 
-.container{
-  width:min(var(--max),100%);
-}
+    /* Top nav */
+    .nav{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,0.68), rgba(0,0,0,0.40));
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+    }
+    .navRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 14px;
+      padding: 12px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap: 12px;
+      text-decoration:none;
+      min-width: 220px;
+    }
+    .brand img{
+      width: 44px; height: 44px; object-fit:contain;
+      filter: drop-shadow(0 10px 24px rgba(0,0,0,0.6));
+    }
+    .brand .btxt{ line-height:1.05; }
+    .brand .btxt strong{ display:block; font-size: 14.5px; letter-spacing: .2px; }
+    .brand .btxt span{ display:block; font-size: 12.5px; color: var(--muted); }
 
-.card{
-  background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.03));
-  border:1px solid var(--border);
-  border-radius:26px;
-  padding:40px;
-  box-shadow:var(--shadow);
-  backdrop-filter:blur(10px);
-}
+    .links{ display:none; gap: 18px; align-items:center; }
+    .links a{
+      text-decoration:none;
+      color: rgba(255,255,255,0.82);
+      font-size: 13.5px;
+      letter-spacing: .25px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      transition: background .14s ease, border-color .14s ease, transform .14s ease;
+      white-space: nowrap;
+    }
+    .links a:hover{
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.10);
+      transform: translateY(-1px);
+    }
 
-.company{
-  font-size:14px;
-  color:rgba(255,255,255,0.65);
-  letter-spacing:0.5px;
-  text-transform:uppercase;
-}
+    .ctaRow{ display:flex; align-items:center; gap: 10px; }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      text-decoration:none;
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+      transition: transform .14s ease, background .14s ease, border-color .14s ease, box-shadow .14s ease;
+      user-select:none;
+      font-weight: 650;
+      letter-spacing: 0.2px;
+      font-size: 13.5px;
+      white-space: nowrap;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(255,255,255,0.20);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+    }
+    .btn:active{ transform: translateY(0px) scale(0.99); }
 
-h1{
-  margin:10px 0 0 0;
-  font-size:clamp(34px,4vw,50px);
-  line-height:1.1;
-}
+    .primary{
+      background: linear-gradient(90deg, var(--blue1), var(--blue2));
+      border-color: rgba(30,144,255,0.35);
+      color: white;
+      box-shadow: 0 14px 34px rgba(0,102,255,0.22);
+    }
+    .primary:hover{
+      background: linear-gradient(90deg, #2aa0ff, #0a72ff);
+      border-color: rgba(30,144,255,0.55);
+      box-shadow: 0 18px 44px rgba(0,102,255,0.28);
+    }
 
-.subtitle{
-  margin-top:6px;
-  font-size:18px;
-  color:rgba(255,255,255,0.85);
-}
+    .ghost{
+      background: rgba(255,255,255,0.04);
+    }
 
-p{
-  color:var(--muted);
-  line-height:1.6;
-  font-size:16px;
-}
+    @media (min-width: 860px){
+      .links{ display:flex; }
+    }
 
-.hero{
-  margin-top:25px;
-}
+    /* Hero */
+    .hero{
+      padding: 38px 0 20px;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    @media (min-width: 980px){
+      .heroGrid{ grid-template-columns: 1.15fr 0.85fr; }
+    }
 
-.btn{
-  display:inline-block;
-  margin-top:25px;
-  padding:14px 24px;
-  border-radius:var(--radius);
-  text-decoration:none;
-  font-weight:600;
-  color:white;
-  background:linear-gradient(90deg,var(--blue1),var(--blue2));
-  transition:all .2s ease;
-}
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      position:relative;
+      overflow:hidden;
+    }
+    .card:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(520px 280px at 50% -20%, rgba(30,144,255,0.22), transparent 60%);
+      pointer-events:none;
+    }
+    .heroText{
+      padding: 26px 22px 22px;
+      position:relative;
+    }
+    .kicker{
+      display:inline-flex;
+      gap: 10px;
+      align-items:center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.82);
+      font-size: 12.5px;
+      letter-spacing: .25px;
+    }
+    .kdot{
+      width: 8px; height: 8px; border-radius: 50%;
+      background: linear-gradient(90deg, var(--blue1), var(--blue2));
+      box-shadow: 0 0 0 4px rgba(30,144,255,0.16);
+    }
+    h1{
+      margin: 14px 0 8px;
+      font-size: clamp(28px, 3.6vw, 46px);
+      letter-spacing: 0.2px;
+      line-height: 1.08;
+    }
+    .sub{
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+      max-width: 62ch;
+    }
 
-.btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 15px 40px rgba(0,102,255,0.3);
-}
+    .heroActions{
+      margin-top: 18px;
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items:center;
+    }
 
-.section{
-  margin-top:50px;
-}
+    .heroImage{
+      min-height: 320px;
+      position: relative;
+    }
+    .heroImage img{
+      width:100%; height:100%;
+      object-fit: cover;
+      display:block;
+      filter: saturate(1.05) contrast(1.02);
+      transform: scale(1.02);
+    }
+    .heroImage:after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.55));
+      pointer-events:none;
+    }
+    .heroBadge{
+      position:absolute;
+      left: 16px;
+      bottom: 16px;
+      right: 16px;
+      padding: 14px 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.38);
+      backdrop-filter: blur(10px);
+      display:flex;
+      gap: 10px;
+      align-items: flex-start;
+      z-index: 2;
+    }
+    .heroBadge strong{
+      display:block;
+      font-size: 13.5px;
+      letter-spacing: .2px;
+    }
+    .heroBadge span{
+      display:block;
+      color: rgba(255,255,255,0.75);
+      font-size: 12.5px;
+      line-height: 1.35;
+      margin-top: 2px;
+    }
 
-h2{
-  font-size:20px;
-}
+    /* Sections */
+    section{ scroll-margin-top: 90px; }
+    .section{
+      padding: 26px 0;
+    }
+    .sectionHead{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .sectionHead h2{
+      margin:0;
+      font-size: 22px;
+      letter-spacing: .2px;
+    }
+    .sectionHead p{
+      margin:0;
+      color: var(--muted);
+      font-size: 14.5px;
+      max-width: 70ch;
+      line-height: 1.45;
+    }
 
-ul{
-  margin-top:10px;
-  color:var(--muted);
-  line-height:1.7;
-}
+    .twoCol{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 980px){
+      .twoCol{ grid-template-columns: 1fr 1fr; }
+    }
 
-.footer{
-  margin-top:60px;
-  font-size:14px;
-  color:rgba(255,255,255,0.6);
-  border-top:1px solid rgba(255,255,255,0.1);
-  padding-top:20px;
-}
-</style>
+    .pad{ padding: 18px; position:relative; }
+
+    .featureGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (min-width: 760px){
+      .featureGrid{ grid-template-columns: repeat(3, 1fr); }
+    }
+    .mini{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      padding: 14px;
+      min-height: 106px;
+    }
+    .mini strong{
+      display:block;
+      font-size: 14px;
+      letter-spacing: .2px;
+      margin-bottom: 6px;
+    }
+    .mini span{
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.45;
+      display:block;
+    }
+
+    .imgCard{
+      overflow:hidden;
+      min-height: 260px;
+    }
+    .imgCard img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+      transform: scale(1.02);
+      filter: saturate(1.05) contrast(1.02);
+    }
+    .imgCard:after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.45));
+      pointer-events:none;
+    }
+
+    /* Contact */
+    .contactGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 860px){
+      .contactGrid{ grid-template-columns: 1.1fr 0.9fr; }
+    }
+    .contactList{
+      display:grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      padding: 12px 12px;
+    }
+    .row .left{
+      display:flex;
+      flex-direction:column;
+      gap: 2px;
+    }
+    .row .left strong{ font-size: 13.5px; }
+    .row .left span{ font-size: 13px; color: var(--muted); }
+
+    /* Footer */
+    footer{
+      padding: 26px 0 40px;
+      color: rgba(255,255,255,0.62);
+      font-size: 12.5px;
+    }
+    .foot{
+      border-top: 1px solid rgba(255,255,255,0.10);
+      padding-top: 16px;
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+      align-items:center;
+    }
+
+    /* Small tweak */
+    @media (max-width: 360px){
+      .btn{ font-size: 13px; padding: 10px 12px; }
+    }
+  </style>
 </head>
 
 <body>
-<div class="container">
-<div class="card">
+  <!-- NAV -->
+  <header class="nav" role="banner">
+    <div class="wrap">
+      <div class="navRow">
+        <a class="brand" href="#top" aria-label="AX GAIA Intelligence home">
+          <img src="assets/logo.png" alt="AX GAIA Intelligence logo" />
+          <div class="btxt">
+            <strong>AX GAIA Intelligence</strong>
+            <span>Product: Gaia • Est. 2026</span>
+          </div>
+        </a>
 
-<div class="company">AX GAIA Intelligence • Established 2026</div>
+        <nav class="links" aria-label="Primary">
+          <a href="#gaia">Gaia</a>
+          <a href="#how">How it works</a>
+          <a href="#benefits">Benefits</a>
+          <a href="#contact">Contact</a>
+        </nav>
 
-<h1>Gaia</h1>
-<div class="subtitle">AI-Driven Subsurface Intelligence</div>
+        <div class="ctaRow">
+          <a class="btn ghost" href="https://linkedin.com/company/ax-gaia-intelligence" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn primary" href="mailto:gaia.intelligence@outlook.com?subject=Gaia%20%E2%80%94%20Request%20a%20demo">Request a demo</a>
+        </div>
+      </div>
+    </div>
+  </header>
 
-<div class="hero">
-<p>
-Gaia is a space-enabled subsurface intelligence system developed by
-<strong>AX GAIA Intelligence</strong>.
-It fuses <strong>Sentinel-1 DInSAR satellite deformation data</strong> with
-<strong>on-site GPR scanning</strong> through artificial intelligence.
-</p>
+  <!-- HERO -->
+  <main id="top" class="hero">
+    <div class="wrap">
+      <div class="heroGrid">
+        <div class="card">
+          <div class="heroText">
+            <div class="kicker"><span class="kdot"></span> AI-driven subsurface intelligence • Space-enabled</div>
+            <h1>Gaia helps engineers understand the ground earlier — before drilling.</h1>
+            <p class="sub">
+              Gaia is a non-invasive decision-support system for construction and infrastructure.
+              It brings site-wide insight by combining satellite-derived ground behavior with on-site subsurface sensing,
+              then translating it into practical early-stage indicators.
+            </p>
 
-<p>
-The system provides early-stage indicators that support engineers in planning
-geotechnical investigations more efficiently — before committing to drilling.
-</p>
+            <div class="heroActions">
+              <a class="btn primary" href="#contact">Contact us</a>
+              <a class="btn" href="#how">See how it works</a>
+              <a class="btn" href="#benefits">Why it matters</a>
+            </div>
+          </div>
+        </div>
 
-<a class="btn" href="mailto:gaia.intelligence@outlook.com">Contact</a>
-</div>
+        <div class="card heroImage" aria-label="Gaia hero image">
+          <img src="assets/hero.png" alt="Abstract space-to-ground visualization representing Gaia" />
+          <div class="heroBadge">
+            <div>
+              <strong>AX GAIA Intelligence</strong>
+              <span>Building Gaia — a practical bridge from space data to geotechnical decisions.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 
-<div class="section">
-<h2>The Problem</h2>
-<p>
-Geotechnical investigations are accurate but costly and time-consuming.
-Engineers often need to decide drilling scope without early, site-wide insight,
-increasing uncertainty and risk.
-</p>
-</div>
+  <!-- GAIA -->
+  <section id="gaia" class="section">
+    <div class="wrap">
+      <div class="sectionHead">
+        <div>
+          <h2>What is Gaia?</h2>
+          <p>Early-stage, site-wide insight for smarter planning — designed to support (not replace) traditional investigations.</p>
+        </div>
+      </div>
 
-<div class="section">
-<h2>What Gaia Provides</h2>
-<ul>
-<li>Early site-wide subsurface intelligence</li>
-<li>Fusion of satellite deformation and GPR subsurface data</li>
-<li>AI-based anomaly and settlement indicators</li>
-<li>Cloud-based geotechnical report generation</li>
-<li>Decision-support — not replacement of regulated drilling</li>
-</ul>
-</div>
+      <div class="twoCol">
+        <div class="card pad">
+          <p class="sub" style="margin:0;">
+            Gaia turns radar signals into engineering-relevant indicators that can help reduce uncertainty,
+            avoid unnecessary work, and focus investigations where it matters most.
+          </p>
 
-<div class="section">
-<h2>Target Users</h2>
-<ul>
-<li>Geotechnical engineers</li>
-<li>Construction companies</li>
-<li>Developers</li>
-<li>Infrastructure owners</li>
-<li>Municipalities</li>
-</ul>
-</div>
+          <div class="featureGrid" aria-label="Key outcomes">
+            <div class="mini">
+              <strong>Early indicators</strong>
+              <span>Spot variability, anomalies, and potential risk zones early in planning.</span>
+            </div>
+            <div class="mini">
+              <strong>Non-invasive</strong>
+              <span>Site-wide intelligence with minimal disruption and footprint.</span>
+            </div>
+            <div class="mini">
+              <strong>Practical outputs</strong>
+              <span>Clear insights that support decisions on investigation scope and focus.</span>
+            </div>
+          </div>
+        </div>
 
-<div class="footer">
-© <span id="year"></span> AX GAIA Intelligence • Cyprus<br>
-Founder: Andrea Chrysostomou
-</div>
+        <div class="card imgCard" aria-label="Gaia section image">
+          <img src="assets/section1.png" alt="Abstract geotechnical visualization for Gaia" />
+        </div>
+      </div>
+    </div>
+  </section>
 
-</div>
-</div>
+  <!-- HOW IT WORKS -->
+  <section id="how" class="section">
+    <div class="wrap">
+      <div class="sectionHead">
+        <div>
+          <h2>How Gaia works</h2>
+          <p>From data inputs to AI fusion to usable reports — built for real engineering workflows.</p>
+        </div>
+      </div>
 
-<script>
-document.getElementById("year").textContent = new Date().getFullYear();
-</script>
+      <div class="twoCol">
+        <div class="card imgCard" aria-label="How it works image">
+          <img src="assets/section2.png" alt="Abstract pipeline-style visualization for Gaia" />
+        </div>
 
+        <div class="card pad">
+          <div class="featureGrid" aria-label="Process steps" style="margin-top:0;">
+            <div class="mini">
+              <strong>1) Inputs</strong>
+              <span>Combine satellite signals and on-site subsurface measurements with ground truth where available.</span>
+            </div>
+            <div class="mini">
+              <strong>2) AI fusion</strong>
+              <span>Learn relationships between surface behavior and subsurface patterns across space and time.</span>
+            </div>
+            <div class="mini">
+              <strong>3) Outputs</strong>
+              <span>Generate clear indicators and summaries for early-stage planning and communication.</span>
+            </div>
+          </div>
+
+          <p class="sub" style="margin:14px 0 0;">
+            The goal: give engineers a fast “first picture” of the site, so decisions are better informed from day one.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section id="benefits" class="section">
+    <div class="wrap">
+      <div class="sectionHead">
+        <div>
+          <h2>Why it matters</h2>
+          <p>Clear value for engineers, owners, and geotechnical partners — with a low-friction adoption path.</p>
+        </div>
+      </div>
+
+      <div class="card pad">
+        <div class="featureGrid" aria-label="Benefits grid" style="grid-template-columns: repeat(1, 1fr);">
+          <div class="mini">
+            <strong>For engineers</strong>
+            <span>Decision-support that helps plan investigations more efficiently and justify scope with evidence.</span>
+          </div>
+          <div class="mini">
+            <strong>For owners & developers</strong>
+            <span>Reduce uncertainty early, lower avoidable cost overruns, and improve planning confidence.</span>
+          </div>
+          <div class="mini">
+            <strong>For geotechnical firms</strong>
+            <span>A complementary intelligence layer that can improve workflow efficiency and create new service value.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section">
+    <div class="wrap">
+      <div class="sectionHead">
+        <div>
+          <h2>Contact</h2>
+          <p>If you want a pilot discussion or a demo, send a message — we’ll reply with next steps.</p>
+        </div>
+      </div>
+
+      <div class="contactGrid">
+        <div class="card pad">
+          <p class="sub" style="margin:0;">
+            <strong style="color: var(--text);">AX GAIA Intelligence</strong><br/>
+            Product: Gaia (AI-driven subsurface intelligence).<br/>
+            Established: <strong style="color: var(--text);">2026</strong>.
+          </p>
+
+          <div class="contactList" aria-label="Contact options">
+            <div class="row">
+              <div class="left">
+                <strong>Email</strong>
+                <span>gaia.intelligence@outlook.com</span>
+              </div>
+              <a class="btn primary" href="mailto:gaia.intelligence@outlook.com?subject=Gaia%20%E2%80%94%20Request%20a%20demo">Send</a>
+            </div>
+
+            <div class="row">
+              <div class="left">
+                <strong>LinkedIn (Company)</strong>
+                <span>AX GAIA Intelligence</span>
+              </div>
+              <a class="btn" href="https://linkedin.com/company/ax-gaia-intelligence" target="_blank" rel="noopener">Open</a>
+            </div>
+
+            <div class="row">
+              <div class="left">
+                <strong>LinkedIn (Founder)</strong>
+                <span>Andrea Chrysostomou</span>
+              </div>
+              <a class="btn" href="https://www.linkedin.com/in/andrea-chrysostomou-b24b233b" target="_blank" rel="noopener">Open</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card pad">
+          <div class="kicker"><span class="kdot"></span> Quick note</div>
+          <p class="sub" style="margin-top:12px;">
+            This site is a lightweight landing page hosted on GitHub Pages.
+            You can expand it later into multiple pages (team, projects, events) whenever you’re ready.
+          </p>
+          <div class="heroActions" style="margin-top:14px;">
+            <a class="btn" href="#top">Back to top</a>
+            <a class="btn primary" href="mailto:gaia.intelligence@outlook.com?subject=Gaia%20%E2%80%94%20Pilot%20interest">Pilot interest</a>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="foot wrap" style="padding-left:0; padding-right:0;">
+          <span>© <span id="y"></span> AX GAIA Intelligence. All rights reserved.</span>
+          <span style="color: rgba(255,255,255,0.55);">Gaia — AI-driven subsurface intelligence</span>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <script>
+    // Set year in footer
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
