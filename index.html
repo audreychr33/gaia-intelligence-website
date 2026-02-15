@@ -59,10 +59,10 @@
       min-width: 220px;
     }
     .brand img{
-  width: 150px;   
-  height: 150px; 
-  object-fit:contain;
-  filter: drop-shadow(0 10px 24px rgba(0,0,0,0.6));
+      width: 150px;
+      height: 150px;
+      object-fit:contain;
+      filter: drop-shadow(0 10px 24px rgba(0,0,0,0.6));
     }
     .brand .btxt{ line-height:1.05; }
     .brand .btxt strong{ display:block; font-size: 14.5px; letter-spacing: .2px; }
@@ -88,7 +88,7 @@
       .links{ display:flex; }
     }
 
-    /* Buttons (still used for contact rows) */
+    /* Buttons */
     .btn{
       display:inline-flex;
       align-items:center;
@@ -190,7 +190,6 @@
       max-width: 62ch;
     }
 
-    /* Hero action buttons removed as requested */
     .heroActions{ display:none; }
 
     .heroImage{
@@ -330,28 +329,41 @@
       gap: 12px;
     }
 
-    .contactList{
-      display:grid;
-      gap: 10px;
-      margin-top: 10px;
+    /* OPTION 1 (Minimal icon row) */
+    .contactGrid .card{
+      max-width: 760px;
+      margin: 0 auto;
     }
-    .row{
+    .contactCompact{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+    .iconBtn{
       display:flex;
       align-items:center;
-      justify-content:space-between;
       gap: 10px;
+      padding: 12px 14px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.05);
-      padding: 12px 12px;
+      text-decoration:none;
+      color: rgba(255,255,255,0.92);
+      font-weight: 650;
+      letter-spacing: .2px;
+      transition: transform .14s ease, background .14s ease, border-color .14s ease, box-shadow .14s ease;
     }
-    .row .left{
-      display:flex;
-      flex-direction:column;
-      gap: 2px;
+    .iconBtn svg{
+      width: 18px;
+      height: 18px;
     }
-    .row .left strong{ font-size: 13.5px; }
-    .row .left span{ font-size: 13px; color: var(--muted); }
+    .iconBtn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.18);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.30);
+    }
 
     /* Footer */
     footer{
@@ -410,8 +422,6 @@
               It brings site-wide insight by combining satellite-derived ground behavior with on-site subsurface sensing,
               then translating it into practical early-stage indicators.
             </p>
-
-            <!-- hero buttons removed as requested -->
           </div>
         </div>
 
@@ -507,7 +517,7 @@
     </div>
   </section>
 
-  <!-- IMPACT (renamed from Benefits) -->
+  <!-- IMPACT -->
   <section id="impact" class="section">
     <div class="wrap">
       <div class="sectionHead">
@@ -536,7 +546,7 @@
     </div>
   </section>
 
-  <!-- CONTACT -->
+  <!-- CONTACT (Option 1 applied) -->
   <section id="contact" class="section">
     <div class="wrap">
       <div class="sectionHead">
@@ -547,35 +557,35 @@
 
       <div class="contactGrid">
         <div class="card pad">
-          <p class="sub" style="margin:0;">
-            <strong style="color: var(--text);">AX GAIA Intelligence</strong><br/>
-            Product: Gaia (AI-driven subsurface intelligence).
-          </p>
+          <div class="contactCompact" aria-label="Contact links">
+            <a class="iconBtn" href="mailto:gaia.intelligence@outlook.com?subject=Gaia%20%E2%80%94%20Contact" aria-label="Email">
+              <!-- Email icon -->
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M5.5 7l6.1 5a1 1 0 0 0 1.3 0l6.1-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              <span>Email</span>
+            </a>
 
-          <div class="contactList" aria-label="Contact options">
-            <div class="row">
-              <div class="left">
-                <strong>Email</strong>
-                <span>gaia.intelligence@outlook.com</span>
-              </div>
-              <a class="btn primary" href="mailto:gaia.intelligence@outlook.com?subject=Gaia%20%E2%80%94%20Contact">Send</a>
-            </div>
+            <a class="iconBtn" href="https://linkedin.com/company/ax-gaia-intelligence" target="_blank" rel="noopener" aria-label="LinkedIn Company">
+              <!-- LinkedIn icon -->
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6.3 10.2V18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M6.3 7.2a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" fill="currentColor"/>
+                <path d="M10.5 18v-4.9c0-1.8 1-3 2.7-3 1.6 0 2.5 1.1 2.5 3V18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              <span>Company</span>
+            </a>
 
-            <div class="row">
-              <div class="left">
-                <strong>LinkedIn (Company)</strong>
-                <span>AX GAIA Intelligence</span>
-              </div>
-              <a class="btn" href="https://linkedin.com/company/ax-gaia-intelligence" target="_blank" rel="noopener">Open</a>
-            </div>
-
-            <div class="row">
-              <div class="left">
-                <strong>LinkedIn (Founder)</strong>
-                <span>Andrea Chrysostomou</span>
-              </div>
-              <a class="btn" href="https://www.linkedin.com/in/andrea-chrysostomou-b24b233b" target="_blank" rel="noopener">Open</a>
-            </div>
+            <a class="iconBtn" href="https://www.linkedin.com/in/andrea-chrysostomou-b24b233b" target="_blank" rel="noopener" aria-label="LinkedIn Founder">
+              <!-- LinkedIn icon -->
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6.3 10.2V18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M6.3 7.2a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" fill="currentColor"/>
+                <path d="M10.5 18v-4.9c0-1.8 1-3 2.7-3 1.6 0 2.5 1.1 2.5 3V18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              <span>Founder</span>
+            </a>
           </div>
         </div>
       </div>
