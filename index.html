@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>AX GAIA Intelligence — Gaia</title>
-  <meta name="description" content="AX GAIA Intelligence (est. 2026) — Gaia: AI-driven, non-invasive, space-enabled subsurface intelligence for construction and infrastructure." />
+  <meta name="description" content="AX GAIA Intelligence — Gaia: AI-driven, non-invasive, space-enabled subsurface intelligence for construction and infrastructure." />
 
   <style>
     :root{
@@ -64,7 +64,6 @@
     }
     .brand .btxt{ line-height:1.05; }
     .brand .btxt strong{ display:block; font-size: 14.5px; letter-spacing: .2px; }
-    .brand .btxt span{ display:block; font-size: 12.5px; color: var(--muted); }
 
     .links{ display:none; gap: 18px; align-items:center; }
     .links a{
@@ -83,8 +82,11 @@
       border-color: rgba(255,255,255,0.10);
       transform: translateY(-1px);
     }
+    @media (min-width: 860px){
+      .links{ display:flex; }
+    }
 
-    .ctaRow{ display:flex; align-items:center; gap: 10px; }
+    /* Buttons (still used for contact rows) */
     .btn{
       display:inline-flex;
       align-items:center;
@@ -123,18 +125,8 @@
       box-shadow: 0 18px 44px rgba(0,102,255,0.28);
     }
 
-    .ghost{
-      background: rgba(255,255,255,0.04);
-    }
-
-    @media (min-width: 860px){
-      .links{ display:flex; }
-    }
-
     /* Hero */
-    .hero{
-      padding: 38px 0 20px;
-    }
+    .hero{ padding: 38px 0 20px; }
     .heroGrid{
       display:grid;
       grid-template-columns: 1fr;
@@ -196,13 +188,8 @@
       max-width: 62ch;
     }
 
-    .heroActions{
-      margin-top: 18px;
-      display:flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items:center;
-    }
+    /* Hero action buttons removed as requested */
+    .heroActions{ display:none; }
 
     .heroImage{
       min-height: 320px;
@@ -252,9 +239,8 @@
 
     /* Sections */
     section{ scroll-margin-top: 90px; }
-    .section{
-      padding: 26px 0;
-    }
+    .section{ padding: 26px 0; }
+
     .sectionHead{
       display:flex;
       align-items:flex-end;
@@ -341,9 +327,7 @@
       grid-template-columns: 1fr;
       gap: 12px;
     }
-    @media (min-width: 860px){
-      .contactGrid{ grid-template-columns: 1.1fr 0.9fr; }
-    }
+
     .contactList{
       display:grid;
       gap: 10px;
@@ -383,7 +367,6 @@
       align-items:center;
     }
 
-    /* Small tweak */
     @media (max-width: 360px){
       .btn{ font-size: 13px; padding: 10px 12px; }
     }
@@ -399,21 +382,15 @@
           <img src="assets/logo.png" alt="AX GAIA Intelligence logo" />
           <div class="btxt">
             <strong>AX GAIA Intelligence</strong>
-            <span>Product: Gaia • Est. 2026</span>
           </div>
         </a>
 
         <nav class="links" aria-label="Primary">
           <a href="#gaia">Gaia</a>
           <a href="#how">How it works</a>
-          <a href="#benefits">Benefits</a>
+          <a href="#impact">Impact</a>
           <a href="#contact">Contact</a>
         </nav>
-
-        <div class="ctaRow">
-          <a class="btn ghost" href="https://linkedin.com/company/ax-gaia-intelligence" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="btn primary" href="mailto:gaia.intelligence@outlook.com?subject=Gaia%20%E2%80%94%20Request%20a%20demo">Request a demo</a>
-        </div>
       </div>
     </div>
   </header>
@@ -432,11 +409,7 @@
               then translating it into practical early-stage indicators.
             </p>
 
-            <div class="heroActions">
-              <a class="btn primary" href="#contact">Contact us</a>
-              <a class="btn" href="#how">See how it works</a>
-              <a class="btn" href="#benefits">Why it matters</a>
-            </div>
+            <!-- hero buttons removed as requested -->
           </div>
         </div>
 
@@ -445,7 +418,7 @@
           <div class="heroBadge">
             <div>
               <strong>AX GAIA Intelligence</strong>
-              <span>Building Gaia — a practical bridge from space data to geotechnical decisions.</span>
+              <span>Gaia — bridging space data to geotechnical decision support.</span>
             </div>
           </div>
         </div>
@@ -499,27 +472,27 @@
       <div class="sectionHead">
         <div>
           <h2>How Gaia works</h2>
-          <p>From data inputs to AI fusion to usable reports — built for real engineering workflows.</p>
+          <p>From data inputs to AI fusion to usable outputs — built for real engineering workflows.</p>
         </div>
       </div>
 
       <div class="twoCol">
         <div class="card imgCard" aria-label="How it works image">
-          <img src="assets/section2.png" alt="Abstract pipeline-style visualization for Gaia" />
+          <img src="assets/section2.png" alt="Abstract subsurface intelligence visualization for Gaia" />
         </div>
 
         <div class="card pad">
           <div class="featureGrid" aria-label="Process steps" style="margin-top:0;">
             <div class="mini">
-              <strong>1) Inputs</strong>
+              <strong>Inputs</strong>
               <span>Combine satellite signals and on-site subsurface measurements with ground truth where available.</span>
             </div>
             <div class="mini">
-              <strong>2) AI fusion</strong>
+              <strong>AI fusion</strong>
               <span>Learn relationships between surface behavior and subsurface patterns across space and time.</span>
             </div>
             <div class="mini">
-              <strong>3) Outputs</strong>
+              <strong>Outputs</strong>
               <span>Generate clear indicators and summaries for early-stage planning and communication.</span>
             </div>
           </div>
@@ -532,18 +505,18 @@
     </div>
   </section>
 
-  <!-- BENEFITS -->
-  <section id="benefits" class="section">
+  <!-- IMPACT (renamed from Benefits) -->
+  <section id="impact" class="section">
     <div class="wrap">
       <div class="sectionHead">
         <div>
-          <h2>Why it matters</h2>
+          <h2>Impact</h2>
           <p>Clear value for engineers, owners, and geotechnical partners — with a low-friction adoption path.</p>
         </div>
       </div>
 
       <div class="card pad">
-        <div class="featureGrid" aria-label="Benefits grid" style="grid-template-columns: repeat(1, 1fr);">
+        <div class="featureGrid" aria-label="Impact grid" style="grid-template-columns: repeat(1, 1fr);">
           <div class="mini">
             <strong>For engineers</strong>
             <span>Decision-support that helps plan investigations more efficiently and justify scope with evidence.</span>
@@ -567,7 +540,6 @@
       <div class="sectionHead">
         <div>
           <h2>Contact</h2>
-          <p>If you want a pilot discussion or a demo, send a message — we’ll reply with next steps.</p>
         </div>
       </div>
 
@@ -585,7 +557,7 @@
                 <strong>Email</strong>
                 <span>gaia.intelligence@outlook.com</span>
               </div>
-              <a class="btn primary" href="mailto:gaia.intelligence@outlook.com?subject=Gaia%20%E2%80%94%20Request%20a%20demo">Send</a>
+              <a class="btn primary" href="mailto:gaia.intelligence@outlook.com?subject=Gaia%20%E2%80%94%20Contact">Send</a>
             </div>
 
             <div class="row">
@@ -605,18 +577,6 @@
             </div>
           </div>
         </div>
-
-        <div class="card pad">
-          <div class="kicker"><span class="kdot"></span> Quick note</div>
-          <p class="sub" style="margin-top:12px;">
-            This site is a lightweight landing page hosted on GitHub Pages.
-            You can expand it later into multiple pages (team, projects, events) whenever you’re ready.
-          </p>
-          <div class="heroActions" style="margin-top:14px;">
-            <a class="btn" href="#top">Back to top</a>
-            <a class="btn primary" href="mailto:gaia.intelligence@outlook.com?subject=Gaia%20%E2%80%94%20Pilot%20interest">Pilot interest</a>
-          </div>
-        </div>
       </div>
 
       <footer>
@@ -629,7 +589,6 @@
   </section>
 
   <script>
-    // Set year in footer
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
 </body>
