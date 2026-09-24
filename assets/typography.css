@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("space-grotesk.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+}
+:root { --font-sans: "Space Grotesk", Arial, sans-serif; }

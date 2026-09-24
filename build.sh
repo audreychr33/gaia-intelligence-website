@@ -4,3 +4,4 @@ set -eu
 mkdir -p dist/assets
 cp index.html privacy.html favicon*.png favicon.ico _headers dist/
 cp assets/*.png assets/*.css assets/*.js dist/assets/
+cp assets/*.ttf assets/*-license.txt dist/assets/

@@ -16,7 +16,7 @@
 
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      font-family: var(--font-sans);
       color: var(--text);
       background:
         radial-gradient(900px 380px at 50% 0%, rgba(30,144,255,0.20), transparent 55%),

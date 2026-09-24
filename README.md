@@ -4,9 +4,21 @@ Static company website published by GitHub Pages from the root of `main`.
 
 ## Editing and publishing
 
+For a local development preview in PowerShell, run
+`powershell -NoProfile -ExecutionPolicy Bypass -File .\preview.ps1`, then open
+http://localhost:8000. Keep that terminal running, refresh after edits, and stop
+with Ctrl+C. This serves local files only and does not publish anything.
+The script binds to this computer only. Cloudflare-specific `_headers` are
+not applied by this simple local preview server.
+
 - `index.html` and `privacy.html` contain the page content.
 - `assets/index.css` and `assets/privacy.css` contain page styles.
 - `assets/site.js` updates the copyright year.
+- `assets/coastal-intelligence.png` is an AI-generated conceptual illustration
+  used in the reference-inspired layout. Its heatmaps are illustrative, not
+  measured site data or evidence of completed validation.
+- The platform diagram and process timeline are responsive HTML/CSS. The
+  development details expand without JavaScript.
 - Keep `CNAME` set to `axgaiaintelligence.com`.
 - Preview using a local HTTP server, not a `file://` URL. Check both pages,
   navigation, images, email links, and the browser console before publishing.
