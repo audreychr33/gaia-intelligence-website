@@ -5,4 +5,9 @@
   font-weight: 300 700;
   font-display: swap;
 }
-:root { --font-sans: "Space Grotesk", Arial, sans-serif; }
+/* Greek letters: Geologica (SIL OFL 1.1, fonts/LICENSE-OFL-geologica.txt); Space Grotesk has no Greek. */
+@font-face { font-family: "Geologica"; src: url("fonts/geologica-greek-400-normal.woff2") format("woff2"); font-weight: 300 400; font-display: swap; unicode-range: U+0370-03FF, U+1F00-1FFF; }
+@font-face { font-family: "Geologica"; src: url("fonts/geologica-greek-500-normal.woff2") format("woff2"); font-weight: 500; font-display: swap; unicode-range: U+0370-03FF, U+1F00-1FFF; }
+@font-face { font-family: "Geologica"; src: url("fonts/geologica-greek-600-normal.woff2") format("woff2"); font-weight: 600; font-display: swap; unicode-range: U+0370-03FF, U+1F00-1FFF; }
+@font-face { font-family: "Geologica"; src: url("fonts/geologica-greek-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; unicode-range: U+0370-03FF, U+1F00-1FFF; }
+:root { --font-sans: "Space Grotesk", "Geologica", Arial, sans-serif; }
