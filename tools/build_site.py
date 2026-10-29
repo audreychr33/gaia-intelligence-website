@@ -1,7 +1,8 @@
 """Build the static company website in English and Greek.
 
 Run from the repository root: python tools/build_site.py
-It writes index.html, terrax/, gaia/, data-sources/ and their Greek versions under el/.
+It writes index.html, terrax/, gaia/, data-sources/, privacy/ and their Greek versions under el/,
+plus privacy.html, which forwards the old address to privacy/.
 The GAIA page body is today's page, kept as it is (tools/gaia_main_en.html), with the shared header and footer.
 Only plain HTML and the local CSS/JS files are produced: no external requests, no inline styles or scripts
 (the Content Security Policy blocks them).
@@ -17,7 +18,7 @@ LINKEDIN_FOUNDER = 'https://www.linkedin.com/in/andrea-chrysostomou-b24b233b'
 CSP = ("default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; "
        "form-action 'none'; object-src 'none'; frame-src 'none'; connect-src 'none';")
 
-PAGES = {'home': '', 'terrax': 'terrax/', 'gaia': 'gaia/', 'data': 'data-sources/'}
+PAGES = {'home': '', 'terrax': 'terrax/', 'gaia': 'gaia/', 'data': 'data-sources/', 'privacy': 'privacy/'}
 
 # Icons. The GAIA set is today's; the rest are Lucide (ISC licence) outlines.
 ICON_LIBRARY = '''<svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -56,7 +57,7 @@ T = {
     'en': {
         'skip': 'Skip to content', 'home_label': 'AX GAIA INTELLIGENCE home', 'primary': 'Primary',
         'nav': [('home', 'Company'), ('terrax', 'TerrAX'), ('gaia', 'GAIA')], 'contact': 'Contact',
-        'access': 'Request early access', 'access_subject': 'TerrAX%20early%20access', 'lang_label': 'Language',
+        'access': 'Request early access', 'copy': 'Copy address', 'copied': 'Copied', 'lang_label': 'Language',
         'rights': 'All rights reserved.', 'data': 'Data &amp; Sources', 'privacy': 'Privacy Policy',
         'spacebic': ('AX GAIA INTELLIGENCE LTD participates in the Space BIC by ERATOSTHENES CoE, which is supported and funded by '
                      'the Cyprus Deputy Ministry of Research, Innovation and Digital Policy (DMRID).'),
@@ -64,7 +65,7 @@ T = {
     'el': {
         'skip': 'Μετάβαση στο περιεχόμενο', 'home_label': 'AX GAIA INTELLIGENCE, αρχική', 'primary': 'Κύριο μενού',
         'nav': [('home', 'Εταιρεία'), ('terrax', 'TerrAX'), ('gaia', 'GAIA')], 'contact': 'Επικοινωνία',
-        'access': 'Ζητήστε πρόσβαση', 'access_subject': 'TerrAX%20early%20access', 'lang_label': 'Γλώσσα',
+        'access': 'Ζητήστε πρόσβαση', 'copy': 'Αντιγραφή διεύθυνσης', 'copied': 'Αντιγράφηκε', 'lang_label': 'Γλώσσα',
         'rights': 'Με την επιφύλαξη παντός δικαιώματος.', 'data': 'Δεδομένα &amp; Πηγές', 'privacy': 'Πολιτική απορρήτου',
         'spacebic': ('Η AX GAIA INTELLIGENCE LTD συμμετέχει στο Space BIC του ERATOSTHENES CoE, που υποστηρίζεται και χρηματοδοτείται '
                      'από το Υφυπουργείο Έρευνας, Καινοτομίας και Ψηφιακής Πολιτικής (ΥΦΕΚΑΨΠ).'),
@@ -106,7 +107,7 @@ def header(lang, page):
                    f'<a href="{url("en", page)}" hreflang="en" lang="en"{" aria-current=\"true\"" if lang == "en" else ""}>EN</a>'
                    f'<a href="{url("el", page)}" hreflang="el" lang="el"{" aria-current=\"true\"" if lang == "el" else ""}>ΕΛ</a></span>')
     return f'''<header class="nav">
-  <div class="wrap nav-row"><a class="brand" href="{url(lang, 'home')}" aria-label="{t['home_label']}"><span class="brand-mark" aria-hidden="true"><img src="/assets/logo-dark.png" alt="" width="1024" height="1024"></span><span class="brand-text"><strong>AX GAIA</strong><span>INTELLIGENCE</span></span></a><nav class="links" aria-label="{t['primary']}">{links}<a href="{contact}">{t['contact']}</a>{lang_switch}<a href="mailto:{EMAIL}?subject={t['access_subject']}">{t['access']}</a></nav></div>
+  <div class="wrap nav-row"><a class="brand" href="{url(lang, 'home')}" aria-label="{t['home_label']}"><span class="brand-mark" aria-hidden="true"><img src="/assets/logo-dark.png" alt="" width="1024" height="1024"></span><span class="brand-text"><strong>AX GAIA</strong><span>INTELLIGENCE</span></span></a><nav class="links" aria-label="{t['primary']}">{links}<a href="{contact}">{t['contact']}</a>{lang_switch}<a href="{contact}">{t['access']}</a></nav></div>
 </header>
 '''
 
@@ -115,7 +116,7 @@ def footer(lang):
     t = T[lang]
     return f'''<footer class="footer">
   <div class="wrap">
-    <div class="footer-meta"><span>© <span id="y"></span> AX GAIA INTELLIGENCE. {t['rights']}</span><span class="footer-divider" aria-hidden="true">|</span><span class="footer-links"><a href="{url(lang, 'data')}">{t['data']}</a> · <a href="/privacy.html">{t['privacy']}</a></span></div>
+    <div class="footer-meta"><span>© <span id="y"></span> AX GAIA INTELLIGENCE. {t['rights']}</span><span class="footer-divider" aria-hidden="true">|</span><span class="footer-links"><a href="{url(lang, 'data')}">{t['data']}</a> · <a href="{url(lang, 'privacy')}">{t['privacy']}</a></span></div>
     <div class="partner"><a href="https://spacebic.cy" target="_blank" rel="noopener noreferrer" aria-label="Space BIC by ERATOSTHENES CoE"><img src="/assets/spacebic-logo.png" alt="Space BIC by ERATOSTHENES CoE" width="210" loading="lazy"></a><p>{t['spacebic']}</p></div>
   </div>
 </footer>
@@ -128,16 +129,20 @@ def footer(lang):
 def contact_section(lang):
     if lang == 'el':
         eyebrow, title, line = 'ΕΠΙΚΟΙΝΩΝΙΑ', 'Επικοινωνία', 'Θα χαρούμε να μιλήσουμε μαζί σας.'
+        note = 'Για πρόσβαση στο TerrAX ή για οτιδήποτε άλλο, στείλτε μας email. Αν δεν ανοίξει πρόγραμμα email, αντιγράψτε τη διεύθυνση.'
         company, founder = 'LinkedIn εταιρείας', 'LinkedIn ιδρύτριας'
     else:
         eyebrow, title, line = 'GET IN TOUCH', 'Contact', 'We would be glad to hear from you.'
+        note = 'For early access to TerrAX or anything else, email us. If no email app opens, copy the address.'
         company, founder = 'Company LinkedIn', 'Founder LinkedIn'
     return f'''  <section id="contact" class="contact section" aria-labelledby="contact-title">
     <div class="wrap contact-grid">
       <div><p class="eyebrow">{eyebrow}</p><h2 id="contact-title">{title}</h2><p class="contact-invitation">{line}</p></div>
       <div>
+        <p>{note}</p>
         <div class="contact-links">
           <a class="button primary contact-email" href="mailto:{EMAIL}"><span>{EMAIL}</span><span aria-hidden="true">↗</span></a>
+          <button class="button copy-email" type="button" data-copy="{EMAIL}" data-done="{T[lang]['copied']}">{T[lang]['copy']}</button>
           <a class="button" href="{LINKEDIN_COMPANY}" target="_blank" rel="noopener noreferrer">{company} <span aria-hidden="true">↗</span></a>
           <a class="button" href="{LINKEDIN_FOUNDER}" target="_blank" rel="noopener noreferrer">{founder} <span aria-hidden="true">↗</span></a>
         </div>
@@ -339,7 +344,7 @@ def terrax(lang):
         <p class="eyebrow"><span class="status-dot"></span>{c['eyebrow']}</p>
         <h1 id="hero-title">{c['h1']}</h1>
         <p class="lead">{c['lead']}</p>
-        <div class="actions"><a class="button primary" href="mailto:{EMAIL}?subject=TerrAX%20early%20access">{c['cta']} <span aria-hidden="true">↗</span></a><a class="button" href="#report">{c['see']} <span aria-hidden="true">↓</span></a></div>
+        <div class="actions"><a class="button primary" href="{url(lang, 'home')}#contact">{c['cta']} <span aria-hidden="true">↗</span></a><a class="button" href="#report">{c['see']} <span aria-hidden="true">↓</span></a></div>
         <p class="fine">{c['fine']}</p>
       </div>
       <figure><img class="shot" src="/assets/terrax/overview-{lang}.webp" alt="{c['shot_alt']}" width="1600" height="1000"><figcaption>{c['shot_cap']}</figcaption></figure>
@@ -556,14 +561,113 @@ def gaia(lang):
     return head(lang, 'gaia', title, description) + header(lang, 'gaia') + main + '\n' + footer(lang)
 
 
+# ---------------------------------------------------------------- Privacy Policy
+PRIVACY = {
+    'en': {
+        'title': 'Privacy Policy · AX GAIA INTELLIGENCE',
+        'description': 'How AX GAIA Intelligence Ltd handles personal data on this website and in email.',
+        'eyebrow': 'Legal', 'h1': 'Privacy Policy', 'updated': 'Last updated: 29 October 2026',
+        'intro': 'This policy explains what personal data is processed when you visit this website or email us, why, and what rights you have.',
+        'sections': [
+            ('1. Who we are', [
+                'AX GAIA Intelligence Ltd, a company registered in Cyprus, is the controller of the personal data described here.',
+                f'Contact for any privacy question: <a href="mailto:{EMAIL}">{EMAIL}</a>.',
+                'This policy covers this website and email sent to us. The TerrAX platform, when it opens to users, will have its own privacy notice and terms.']),
+            ('2. What we process and why', [
+                '<strong>When you visit the website.</strong> Our hosting provider processes technical data such as your IP address, browser and device type, the pages requested and the time, to deliver the pages and keep the service secure. We do not receive or keep these records. Legal basis: our legitimate interest in running a secure website (GDPR Article 6(1)(f)).',
+                '<strong>When you email us.</strong> We use your email address, your name and whatever you write, to reply and, if you ask for early access, to arrange it. Legal basis: steps you ask for before a possible agreement (Article 6(1)(b)) and our legitimate interest in answering enquiries (Article 6(1)(f)).']),
+            ('3. What we do not do', [
+                'There are no forms, accounts, cookies, analytics, advertising or tracking on this website.',
+                'Fonts, images and scripts are served from this website itself; no third-party content is loaded when you open a page.',
+                'We do not sell personal data or use it for marketing without your permission.']),
+            ('4. Service providers', [
+                'GitHub, Inc. hosts this website (GitHub Pages). Microsoft provides our email (Microsoft 365).',
+                'These providers may process data outside the European Economic Area. Such transfers rely on the safeguards they offer, such as the EU–US Data Privacy Framework and the European Commission’s Standard Contractual Clauses.']),
+            ('5. How long we keep it', [
+                'Emails are kept for as long as needed to deal with your enquiry and any work that follows from it. We review old correspondence at least once a year and delete what is no longer needed, unless the law requires us to keep it.']),
+            ('6. Your rights', [
+                'You can ask to access, correct or delete your personal data, to restrict or object to its use, and to receive it in a portable form. Email us and we will reply within one month.',
+                'You can also complain to the Office of the Commissioner for Personal Data Protection in Cyprus (<a href="https://www.dataprotection.gov.cy" target="_blank" rel="noopener noreferrer">dataprotection.gov.cy</a>).']),
+            ('7. Other websites', [
+                'Links to other websites, such as LinkedIn or Space BIC, are covered by those websites’ own privacy policies.']),
+            ('8. Changes', [
+                'If this policy changes, we will update this page and the date at the top.']),
+        ],
+    },
+    'el': {
+        'title': 'Πολιτική απορρήτου · AX GAIA INTELLIGENCE',
+        'description': 'Πώς η AX GAIA Intelligence Ltd χειρίζεται τα προσωπικά δεδομένα σε αυτή την ιστοσελίδα και στο email.',
+        'eyebrow': 'Νομικά', 'h1': 'Πολιτική απορρήτου', 'updated': 'Τελευταία ενημέρωση: 29 Οκτωβρίου 2026',
+        'intro': 'Η πολιτική αυτή εξηγεί ποια προσωπικά δεδομένα επεξεργάζονται όταν επισκέπτεστε την ιστοσελίδα ή μας στέλνετε email, για ποιο λόγο, και ποια δικαιώματα έχετε.',
+        'sections': [
+            ('1. Ποιοι είμαστε', [
+                'Υπεύθυνη επεξεργασίας των προσωπικών δεδομένων που περιγράφονται εδώ είναι η AX GAIA Intelligence Ltd, εταιρεία εγγεγραμμένη στην Κύπρο.',
+                f'Για κάθε ερώτηση σχετικά με το απόρρητο: <a href="mailto:{EMAIL}">{EMAIL}</a>.',
+                'Η πολιτική καλύπτει αυτή την ιστοσελίδα και τα email που μας στέλνετε. Η πλατφόρμα TerrAX, όταν ανοίξει σε χρήστες, θα έχει δική της ενημέρωση απορρήτου και όρους χρήσης.']),
+            ('2. Τι επεξεργαζόμαστε και γιατί', [
+                '<strong>Όταν επισκέπτεστε την ιστοσελίδα.</strong> Ο πάροχος φιλοξενίας επεξεργάζεται τεχνικά στοιχεία, όπως τη διεύθυνση IP, τον τύπο browser και συσκευής, τις σελίδες που ζητήθηκαν και την ώρα, για να εμφανίσει τις σελίδες και να κρατήσει την υπηρεσία ασφαλή. Εμείς δεν λαμβάνουμε ούτε κρατάμε αυτά τα αρχεία. Νομική βάση: το έννομο συμφέρον μας να λειτουργεί η ιστοσελίδα με ασφάλεια (άρθρο 6(1)(στ) ΓΚΠΔ).',
+                '<strong>Όταν μας στέλνετε email.</strong> Χρησιμοποιούμε τη διεύθυνση email, το όνομά σας και ό,τι μας γράψετε, για να σας απαντήσουμε και, αν ζητήσετε πρόσβαση, για να την οργανώσουμε. Νομική βάση: ενέργειες που ζητάτε πριν από πιθανή συμφωνία (άρθρο 6(1)(β)) και το έννομο συμφέρον μας να απαντάμε σε ερωτήματα (άρθρο 6(1)(στ)).']),
+            ('3. Τι δεν κάνουμε', [
+                'Η ιστοσελίδα δεν έχει φόρμες, λογαριασμούς, cookies, στατιστικά επισκεψιμότητας, διαφημίσεις ή παρακολούθηση.',
+                'Γραμματοσειρές, εικόνες και scripts φορτώνονται από την ίδια την ιστοσελίδα· όταν ανοίγετε μια σελίδα δεν φορτώνεται περιεχόμενο τρίτων.',
+                'Δεν πουλάμε προσωπικά δεδομένα και δεν τα χρησιμοποιούμε για προώθηση χωρίς τη συγκατάθεσή σας.']),
+            ('4. Πάροχοι υπηρεσιών', [
+                'Η GitHub, Inc. φιλοξενεί την ιστοσελίδα (GitHub Pages). Η Microsoft παρέχει το email μας (Microsoft 365).',
+                'Οι πάροχοι αυτοί μπορεί να επεξεργάζονται δεδομένα εκτός του Ευρωπαϊκού Οικονομικού Χώρου. Οι διαβιβάσεις αυτές στηρίζονται στις εγγυήσεις που προσφέρουν, όπως το Πλαίσιο Προστασίας Δεδομένων ΕΕ–ΗΠΑ και οι Τυποποιημένες Συμβατικές Ρήτρες της Ευρωπαϊκής Επιτροπής.']),
+            ('5. Πόσο καιρό τα κρατάμε', [
+                'Τα email κρατούνται όσο χρειάζεται για το ερώτημά σας και για όποια συνεργασία προκύψει. Ελέγχουμε την παλιά αλληλογραφία τουλάχιστον μία φορά τον χρόνο και διαγράφουμε ό,τι δεν χρειάζεται πια, εκτός αν ο νόμος μάς υποχρεώνει να το κρατήσουμε.']),
+            ('6. Τα δικαιώματά σας', [
+                'Μπορείτε να ζητήσετε πρόσβαση, διόρθωση ή διαγραφή των προσωπικών σας δεδομένων, περιορισμό ή εναντίωση στη χρήση τους, και να τα λάβετε σε φορητή μορφή. Στείλτε μας email και θα απαντήσουμε μέσα σε έναν μήνα.',
+                'Μπορείτε επίσης να υποβάλετε παράπονο στο Γραφείο της Επιτρόπου Προστασίας Δεδομένων Προσωπικού Χαρακτήρα (<a href="https://www.dataprotection.gov.cy" target="_blank" rel="noopener noreferrer">dataprotection.gov.cy</a>).']),
+            ('7. Άλλες ιστοσελίδες', [
+                'Οι σύνδεσμοι προς άλλες ιστοσελίδες, όπως το LinkedIn ή το Space BIC, διέπονται από τις δικές τους πολιτικές απορρήτου.']),
+            ('8. Αλλαγές', [
+                'Αν η πολιτική αλλάξει, θα ενημερώσουμε αυτή τη σελίδα και την ημερομηνία στην κορυφή.']),
+        ],
+    },
+}
+
+
+def privacy(lang):
+    c = PRIVACY[lang]
+    sections = ''.join(f'''
+  <section class="section policy" aria-labelledby="p{i}">
+    <div class="wrap"><h2 id="p{i}">{title}</h2>{''.join(f'<p>{x}</p>' for x in paras)}</div>
+  </section>''' for i, (title, paras) in enumerate(c['sections'], 1))
+    body = f'''<main id="top" tabindex="-1">
+  <section class="doc-hero" aria-labelledby="hero-title">
+    <div class="wrap"><p class="eyebrow">{c['eyebrow']}</p><h1 id="hero-title">{c['h1']}</h1><p class="section-intro">{c['intro']}</p><p class="updated">{c['updated']}</p></div>
+  </section>{sections}
+</main>
+'''
+    return head(lang, 'privacy', c['title'], c['description']) + header(lang, 'privacy') + body + footer(lang)
+
+
+def privacy_forward():
+    target = SITE + url('en', 'privacy')
+    return f'''<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="{CSP}">
+  <meta http-equiv="refresh" content="0; url={url('en', 'privacy')}">
+  <link rel="canonical" href="{target}">
+  <title>Privacy Policy · AX GAIA INTELLIGENCE</title>
+</head>
+<body><p>The Privacy Policy has moved to <a href="{url('en', 'privacy')}">{target}</a>.</p></body>
+</html>
+'''
+
+
 def main():
-    builders = {'home': home, 'terrax': terrax, 'gaia': gaia, 'data': data_sources}
+    builders = {'home': home, 'terrax': terrax, 'gaia': gaia, 'data': data_sources, 'privacy': privacy}
     for lang in ('en', 'el'):
         for page, build in builders.items():
             out = ROOT / url(lang, page).lstrip('/') / 'index.html'
             out.parent.mkdir(parents=True, exist_ok=True)
             out.write_text(build(lang), encoding='utf-8', newline='\n')
             print('wrote', out.relative_to(ROOT))
+    (ROOT / 'privacy.html').write_text(privacy_forward(), encoding='utf-8', newline='\n')
     sitemap = ''.join(f'  <url><loc>{SITE}{url(lang, page)}</loc></url>\n' for lang in ('en', 'el') for page in PAGES)
     (ROOT / 'sitemap.xml').write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{sitemap}</urlset>\n', encoding='utf-8', newline='\n')
 
