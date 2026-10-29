@@ -98,10 +98,10 @@ def head(lang, page, title, description):
 '''
 
 
-def header(lang, page, contact_here):
+def header(lang, page):
     t = T[lang]
     links = ''.join(f'<a href="{url(lang, key)}"{" aria-current=\"page\"" if key == page else ""}>{label}</a>' for key, label in t['nav'])
-    contact = '#contact' if contact_here else url(lang, 'home') + '#contact'
+    contact = url(lang, 'home') + '#contact'
     lang_switch = (f'<span class="lang" role="group" aria-label="{t["lang_label"]}">'
                    f'<a href="{url("en", page)}" hreflang="en" lang="en"{" aria-current=\"true\"" if lang == "en" else ""}>EN</a>'
                    f'<a href="{url("el", page)}" hreflang="el" lang="el"{" aria-current=\"true\"" if lang == "el" else ""}>ΕΛ</a></span>')
@@ -258,7 +258,7 @@ def home(lang):
 
 {contact_section(lang)}</main>
 '''
-    return head(lang, 'home', c['title'], c['description']) + header(lang, 'home', True) + body + footer(lang)
+    return head(lang, 'home', c['title'], c['description']) + header(lang, 'home') + body + footer(lang)
 
 
 # ---------------------------------------------------------------- TerrAX
@@ -285,7 +285,7 @@ TX = {
         'r': ['Summary: the parcel, the map, what you can build and what to check', 'Planning and cadastre, zone by zone',
               'Risks and environment, with the body behind each check', 'The parcel today and what is nearby', 'Sources, dates and limitations'],
         'r_note': 'Every page carries its report number and a clear statement of what it is: a preliminary screening from official mapped data, not planning, legal or geotechnical advice.',
-        'r_alt': 'First page of the English TerrAX report for parcel 161 in Fasoula, Paphos', 'r_cap': 'Example: page 1 of the report for parcel 161, Fasoula (Paphos).',
+        'r_alt': 'First page of the English TerrAX report for parcel 161 in Fasoula, Paphos',
         'w_eyebrow': '04 / Who it is for', 'w_h2': 'Built for the people who decide on land.',
         'w': [('briefcase', 'Developers', 'Screen parcels quickly: what the zone allows, what is already there and which checks need a professional.'),
               ('key', 'Real-estate professionals', 'Describe a property accurately and hand clients a clear, sourced report.'),
@@ -315,7 +315,7 @@ TX = {
         'r': ['Σύνοψη: το τεμάχιο, ο χάρτης, τι μπορείτε να κτίσετε και τι να ελέγξετε', 'Πολεοδομία και κτηματολόγιο, ζώνη προς ζώνη',
               'Κίνδυνοι και περιβάλλον, με τον φορέα κάθε ελέγχου', 'Το τεμάχιο σήμερα και τι υπάρχει κοντά', 'Πηγές, ημερομηνίες και περιορισμοί'],
         'r_note': 'Κάθε σελίδα έχει τον αριθμό της αναφοράς και δηλώνει καθαρά τι είναι: προκαταρκτικός έλεγχος από επίσημα χαρτογραφημένα δεδομένα, όχι πολεοδομική, νομική ή γεωτεχνική γνωμάτευση.',
-        'r_alt': 'Πρώτη σελίδα της ελληνικής αναφοράς TerrAX για το τεμάχιο 161 στη Φασούλα Πάφου', 'r_cap': 'Παράδειγμα: η σελίδα 1 της αναφοράς για το τεμάχιο 161 στη Φασούλα Πάφου.',
+        'r_alt': 'Πρώτη σελίδα της ελληνικής αναφοράς TerrAX για το τεμάχιο 161 στη Φασούλα Πάφου',
         'w_eyebrow': '04 / Για ποιους', 'w_h2': 'Για όσους παίρνουν αποφάσεις για τη γη.',
         'w': [('briefcase', 'Developers', 'Γρήγορος έλεγχος τεμαχίων: τι επιτρέπει η ζώνη, τι υπάρχει ήδη και ποιοι έλεγχοι χρειάζονται επαγγελματία.'),
               ('key', 'Επαγγελματίες ακινήτων', 'Ακριβής περιγραφή ενός ακινήτου και μια σαφής αναφορά με πηγές για τους πελάτες σας.'),
@@ -361,9 +361,12 @@ def terrax(lang):
   </section>
 
   <section id="report" class="section" aria-labelledby="report-title">
-    <div class="wrap report-grid">
-      <figure><img src="/assets/terrax/report-{lang}.webp" alt="{c['r_alt']}" width="1032" height="1460" loading="lazy"><figcaption>{c['r_cap']}</figcaption></figure>
-      <div><p class="eyebrow">{c['r_eyebrow']}</p><h2 id="report-title">{c['r_h2']}</h2><ol class="report-list">{report}</ol><p class="section-intro">{c['r_note']}</p></div>
+    <div class="wrap">
+      <div class="report-grid">
+        <div><p class="eyebrow">{c['r_eyebrow']}</p><h2 id="report-title">{c['r_h2']}</h2><p class="section-intro">{c['r_note']}</p></div>
+        <ol class="report-list">{report}</ol>
+      </div>
+      <div class="report-paper"><img src="/assets/terrax/report-{lang}.webp" alt="{c['r_alt']}" width="1428" height="1160" loading="lazy"></div>
     </div>
   </section>
 
@@ -379,7 +382,7 @@ def terrax(lang):
   </section>
 </main>
 '''
-    return head(lang, 'terrax', c['title'], c['description']) + header(lang, 'terrax', False) + body + footer(lang)
+    return head(lang, 'terrax', c['title'], c['description']) + header(lang, 'terrax') + body + footer(lang)
 
 
 # ---------------------------------------------------------------- Data & Sources
@@ -480,7 +483,7 @@ def data_sources(lang):
   </section>
 </main>
 '''
-    return head(lang, 'data', c['title'], c['description']) + header(lang, 'data', False) + body + footer(lang)
+    return head(lang, 'data', c['title'], c['description']) + header(lang, 'data') + body + footer(lang)
 
 
 # ---------------------------------------------------------------- GAIA (today's page)
@@ -536,17 +539,11 @@ GAIA_EL = [
     ('Development focuses on integrating data sources, modelling engineering-relevant indicators, and preparing for pilot validation in real project conditions.',
      'Η ανάπτυξη εστιάζει στον συνδυασμό πηγών δεδομένων, στη μοντελοποίηση δεικτών χρήσιμων για μηχανικούς και στην προετοιμασία πιλοτικής επικύρωσης σε πραγματικά έργα.'),
     ('GAIA development phases: architecture design, indicator modelling, and pilot validation', 'Στάδια ανάπτυξης του GAIA: σχεδιασμός αρχιτεκτονικής, μοντελοποίηση δεικτών και πιλοτική επικύρωση'),
-    ('GET IN TOUCH', 'ΕΠΙΚΟΙΝΩΝΙΑ'), ('id="contact-title">Contact</h2>', 'id="contact-title">Επικοινωνία</h2>'),
-    ('Let’s explore how GAIA can support your next project.', 'Ας δούμε πώς μπορεί το GAIA να στηρίξει το επόμενο έργο σας.'),
-    ('Whether you’re planning a new infrastructure project or want to learn more about our approach, we’d be happy to start a conversation.',
-     'Είτε σχεδιάζετε νέο έργο υποδομής είτε θέλετε να μάθετε περισσότερα για την προσέγγισή μας, θα χαρούμε να μιλήσουμε.'),
-    ('aria-label="Contact links"', 'aria-label="Σύνδεσμοι επικοινωνίας"'),
-    ('Company LinkedIn', 'LinkedIn εταιρείας'), ('Founder LinkedIn', 'LinkedIn ιδρύτριας'),
 ]
 
 
 def gaia(lang):
-    main = (ROOT / 'tools' / 'gaia_main_en.html').read_text(encoding='utf-8').replace('src="assets/', 'src="/assets/')
+    main = (ROOT / 'tools' / 'gaia_main_en.html').read_text(encoding='utf-8').replace('src="assets/', 'src="/assets/').replace('href="#contact"', f'href="{url(lang, "home")}#contact"')
     if lang == 'el':
         for en, el in GAIA_EL:
             assert en in main, en
@@ -556,7 +553,7 @@ def gaia(lang):
     description = ('Το GAIA συνδυάζει την παρατήρηση της Γης με μετρήσεις εδάφους για έγκαιρη πληροφορία για τον χώρο και πιο στοχευμένες γεωτεχνικές έρευνες.'
                    if lang == 'el' else
                    'GAIA combines Earth Observation and ground-sensing data to provide early site intelligence and support better-targeted site and geotechnical investigations.')
-    return head(lang, 'gaia', title, description) + header(lang, 'gaia', True) + main + '\n' + footer(lang)
+    return head(lang, 'gaia', title, description) + header(lang, 'gaia') + main + '\n' + footer(lang)
 
 
 def main():
