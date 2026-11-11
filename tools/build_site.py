@@ -13,8 +13,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SITE = 'https://axgaiaintelligence.com'
 EMAIL = 'info@axgaiaintelligence.com'
-LINKEDIN_COMPANY = 'https://linkedin.com/company/ax-gaia-intelligence'
-LINKEDIN_FOUNDER = 'https://www.linkedin.com/in/andrea-chrysostomou-b24b233b'
+# The TerrAX application (its own server). Publish the site only once this address works.
+APP_URL = 'https://app.axgaiaintelligence.com/app/select'
 CSP = ("default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; "
        "form-action 'none'; object-src 'none'; frame-src 'none'; connect-src 'none';")
 
@@ -57,7 +57,7 @@ T = {
     'en': {
         'skip': 'Skip to content', 'home_label': 'AX GAIA INTELLIGENCE home', 'primary': 'Primary',
         'nav': [('home', 'Company'), ('terrax', 'TerrAX'), ('gaia', 'GAIA')], 'contact': 'Contact',
-        'access': 'Request early access', 'copy': 'Copy address', 'copied': 'Copied', 'lang_label': 'Language',
+        'platform': 'Platform', 'open_tx': 'Open TerrAX', 'talk': 'Talk to us', 'copy': 'Copy address', 'copied': 'Copied', 'lang_label': 'Language',
         'rights': 'All rights reserved.', 'data': 'Data &amp; Sources', 'privacy': 'Privacy Policy',
         'spacebic': ('AX GAIA INTELLIGENCE LTD participates in the Space BIC by ERATOSTHENES CoE, which is supported and funded by '
                      'the Cyprus Deputy Ministry of Research, Innovation and Digital Policy (DMRID).'),
@@ -65,7 +65,7 @@ T = {
     'el': {
         'skip': 'Μετάβαση στο περιεχόμενο', 'home_label': 'AX GAIA INTELLIGENCE, αρχική', 'primary': 'Κύριο μενού',
         'nav': [('home', 'Εταιρεία'), ('terrax', 'TerrAX'), ('gaia', 'GAIA')], 'contact': 'Επικοινωνία',
-        'access': 'Ζητήστε πρόσβαση', 'copy': 'Αντιγραφή διεύθυνσης', 'copied': 'Αντιγράφηκε', 'lang_label': 'Γλώσσα',
+        'platform': 'Πλατφόρμα', 'open_tx': 'Άνοιγμα TerrAX', 'talk': 'Επικοινωνήστε μαζί μας', 'copy': 'Αντιγραφή διεύθυνσης', 'copied': 'Αντιγράφηκε', 'lang_label': 'Γλώσσα',
         'rights': 'Με την επιφύλαξη παντός δικαιώματος.', 'data': 'Δεδομένα &amp; Πηγές', 'privacy': 'Πολιτική απορρήτου',
         'spacebic': ('Η AX GAIA INTELLIGENCE LTD συμμετέχει στο Space BIC του ERATOSTHENES CoE, που υποστηρίζεται και χρηματοδοτείται '
                      'από το Υφυπουργείο Έρευνας, Καινοτομίας και Ψηφιακής Πολιτικής (ΥΦΕΚΑΨΠ).'),
@@ -103,11 +103,15 @@ def header(lang, page):
     t = T[lang]
     links = ''.join(f'<a href="{url(lang, key)}"{" aria-current=\"page\"" if key == page else ""}>{label}</a>' for key, label in t['nav'])
     contact = url(lang, 'home') + '#contact'
+    # The main button fits the page: open TerrAX on its own page, none on the GAIA page (in development), the platform elsewhere
+    # (the platform holds TerrAX today and GAIA services later, so the company pages do not single out one product).
+    cta = {'terrax': (APP_URL, t['open_tx']), 'gaia': None}.get(page, (APP_URL, t['platform']))
+    cta_link = f'<a href="{cta[0]}">{cta[1]}</a>' if cta else ''
     lang_switch = (f'<span class="lang" role="group" aria-label="{t["lang_label"]}">'
                    f'<a href="{url("en", page)}" hreflang="en" lang="en"{" aria-current=\"true\"" if lang == "en" else ""}>EN</a>'
                    f'<a href="{url("el", page)}" hreflang="el" lang="el"{" aria-current=\"true\"" if lang == "el" else ""}>ΕΛ</a></span>')
     return f'''<header class="nav">
-  <div class="wrap nav-row"><a class="brand" href="{url(lang, 'home')}" aria-label="{t['home_label']}"><span class="brand-mark" aria-hidden="true"><img src="/assets/logo-dark.png" alt="" width="1024" height="1024"></span><span class="brand-text"><strong>AX GAIA</strong><span>INTELLIGENCE</span></span></a><nav class="links" aria-label="{t['primary']}">{links}<a href="{contact}">{t['contact']}</a>{lang_switch}<a href="{contact}">{t['access']}</a></nav></div>
+  <div class="wrap nav-row"><a class="brand" href="{url(lang, 'home')}" aria-label="{t['home_label']}"><span class="brand-mark" aria-hidden="true"><img src="/assets/logo-dark.png" alt="" width="1024" height="1024"></span><span class="brand-text"><strong>AX GAIA</strong><span>INTELLIGENCE</span></span></a><nav class="links" aria-label="{t['primary']}">{links}<a href="{contact}">{t['contact']}</a>{lang_switch}{cta_link}</nav></div>
 </header>
 '''
 
@@ -116,7 +120,7 @@ def footer(lang):
     t = T[lang]
     return f'''<footer class="footer">
   <div class="wrap">
-    <div class="footer-meta"><span>© <span id="y"></span> AX GAIA INTELLIGENCE. {t['rights']}</span><span class="footer-divider" aria-hidden="true">|</span><span class="footer-links"><a href="{url(lang, 'data')}">{t['data']}</a> · <a href="{url(lang, 'privacy')}">{t['privacy']}</a></span></div>
+    <div class="footer-meta"><span>© <span id="y"></span> AX GAIA INTELLIGENCE. {t['rights']}</span><span class="footer-links"><a href="{url(lang, 'data')}">{t['data']}</a> · <a href="{url(lang, 'privacy')}">{t['privacy']}</a></span></div>
     <div class="partner"><a href="https://spacebic.cy" target="_blank" rel="noopener noreferrer" aria-label="Space BIC by ERATOSTHENES CoE"><img src="/assets/spacebic-logo.png" alt="Space BIC by ERATOSTHENES CoE" width="210" loading="lazy"></a><p>{t['spacebic']}</p></div>
   </div>
 </footer>
@@ -128,23 +132,19 @@ def footer(lang):
 
 def contact_section(lang):
     if lang == 'el':
-        eyebrow, title, line = 'ΕΠΙΚΟΙΝΩΝΙΑ', 'Επικοινωνία', 'Θα χαρούμε να μιλήσουμε μαζί σας.'
-        note = 'Για πρόσβαση στο TerrAX ή για οτιδήποτε άλλο, στείλτε μας email. Αν δεν ανοίξει πρόγραμμα email, αντιγράψτε τη διεύθυνση.'
-        company, founder = 'LinkedIn εταιρείας', 'LinkedIn ιδρύτριας'
+        eyebrow, title = '04 / Επικοινωνία', 'Μιλήστε μαζί μας'
+        note = 'Για ερωτήσεις για το TerrAX, το GAIA ή ένα έργο, στείλτε μας email. Αν δεν ανοίξει πρόγραμμα email, αντιγράψτε τη διεύθυνση.'
     else:
-        eyebrow, title, line = 'GET IN TOUCH', 'Contact', 'We would be glad to hear from you.'
-        note = 'For early access to TerrAX or anything else, email us. If no email app opens, copy the address.'
-        company, founder = 'Company LinkedIn', 'Founder LinkedIn'
+        eyebrow, title = '04 / Contact', 'Get in touch'
+        note = 'For questions about TerrAX, GAIA or a project, email us. If no email app opens, copy the address.'
     return f'''  <section id="contact" class="contact section" aria-labelledby="contact-title">
     <div class="wrap contact-grid">
-      <div><p class="eyebrow">{eyebrow}</p><h2 id="contact-title">{title}</h2><p class="contact-invitation">{line}</p></div>
+      <div><p class="eyebrow">{eyebrow}</p><h2 id="contact-title">{title}</h2></div>
       <div>
         <p>{note}</p>
         <div class="contact-links">
           <a class="button primary contact-email" href="mailto:{EMAIL}"><span>{EMAIL}</span><span aria-hidden="true">↗</span></a>
-          <button class="button copy-email" type="button" data-copy="{EMAIL}" data-done="{T[lang]['copied']}">{T[lang]['copy']}</button>
-          <a class="button" href="{LINKEDIN_COMPANY}" target="_blank" rel="noopener noreferrer">{company} <span aria-hidden="true">↗</span></a>
-          <a class="button" href="{LINKEDIN_FOUNDER}" target="_blank" rel="noopener noreferrer">{founder} <span aria-hidden="true">↗</span></a>
+          <button class="button copy-email" type="button" data-copy="{EMAIL}" data-done="{T[lang]['copied']}" aria-label="{T[lang]['copy']}" title="{T[lang]['copy']}"><svg class="icon-copy" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg><svg class="icon-done" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></button>
         </div>
       </div>
     </div>
@@ -158,13 +158,13 @@ HOME = {
         'title': 'AX GAIA INTELLIGENCE — Land and ground intelligence for Cyprus',
         'description': 'AX GAIA Intelligence builds TerrAX, land and site intelligence from official data, and GAIA, space-enabled ground intelligence in development.',
         'eyebrow': 'Land and ground intelligence · Cyprus', 'h1': 'Understand a site<br>before you <em>commit to it.</em>',
-        'intro': ('AX GAIA Intelligence builds tools that help developers, property professionals and engineers see what official '
-                  'data says about a site today — and, with GAIA, what lies beneath it.'),
+        'intro': ('AX GAIA Intelligence helps you understand land in Cyprus. TerrAX shows what official data says about any '
+                  'parcel today — free. GAIA, in development, will show what lies beneath it.'),
         'p_eyebrow': '01 / Our products', 'p_h2': 'From the official map to the subsurface.',
-        'p_intro': ('Two products with one aim: fewer surprises on the ground. TerrAX reads what public authorities publish about a parcel. '
-                    'GAIA adds satellite and ground-sensing data to indicate what the maps cannot show.'),
-        'tx_alt': 'TerrAX analysis of parcel 161 in Fasoula, Paphos', 'live': 'Available', 'tx_kicker': 'Land &amp; site intelligence',
-        'tx_text': 'Analyse any parcel in Cyprus in about a minute: what you can build, the official checks, what is on it today and what is nearby.',
+        'p_intro': ('Two products with one aim: fewer surprises on the ground. TerrAX brings together, in seconds, what public authorities '
+                    'publish about a parcel. GAIA is being developed to combine satellite and ground-sensing data, to indicate what the maps cannot show.'),
+        'tx_alt': 'TerrAX official checks for a parcel, with identifying details blurred', 'live': 'Available', 'tx_kicker': 'Land &amp; site intelligence',
+        'tx_text': 'Analyse any parcel in Cyprus in seconds — free, no sign-up: the planning zone and building limits, the official checks, what is on it today and what is nearby.',
         'tx_cta': 'Discover TerrAX', 'g_alt': 'Conceptual illustration of Earth Observation over a construction site', 'dev': 'In development',
         'g_kicker': 'Ground intelligence',
         'g_text': ('A space-enabled ground intelligence platform for construction and infrastructure. It combines Earth Observation with '
@@ -172,23 +172,23 @@ HOME = {
         'g_cta': 'Discover GAIA',
         'w_eyebrow': '02 / How we work', 'w_h2': 'Clear answers.<br>Honest limits.',
         'w': [('book', 'Official sources first', 'Every figure comes from a public authority or a named open dataset, with its date and its limits shown next to it.'),
-              ('check', 'What the data shows — and what it does not', 'We never guess. Where a question needs a licensed architect, engineer or lawyer, we say so plainly.'),
+              ('check', 'What the data shows — and doesn’t', 'We don’t fill gaps with guesses: estimates are marked as indicative, missing data is shown as missing, and where a question needs a licensed professional, we say so plainly.'),
               ('layers', 'From surface to subsurface', 'TerrAX brings together what is mapped about a parcel. GAIA is being developed to add what lies beneath it.')],
         'c_eyebrow': '03 / The company', 'c_h2': 'AX GAIA Intelligence',
-        'c_text': ['AX GAIA Intelligence Ltd is a Cyprus company developing space-enabled land and ground intelligence for construction, infrastructure and property.',
-                   'It works with a network of advisers — quantity surveyors, engineers and a construction company — who test what we build against real projects.'],
+        'c_text': ['AX GAIA Intelligence Ltd is a Cyprus company developing space-enabled land and ground intelligence.',
+                   'It works with a network of advisers who test what we build against real projects.'],
     },
     'el': {
         'title': 'AX GAIA INTELLIGENCE — Πληροφορία για τη γη και το έδαφος στην Κύπρο',
         'description': 'Η AX GAIA Intelligence αναπτύσσει το TerrAX, ανάλυση γης και τεμαχίου από επίσημα δεδομένα, και το GAIA, πληροφορία για το έδαφος από το διάστημα, σε ανάπτυξη.',
         'eyebrow': 'Πληροφορία για γη και έδαφος · Κύπρος', 'h1': 'Γνωρίστε ένα οικόπεδο<br><em>πριν δεσμευτείτε.</em>',
-        'intro': ('Η AX GAIA Intelligence φτιάχνει εργαλεία που δείχνουν σε developers, επαγγελματίες ακινήτων και μηχανικούς τι λένε '
-                  'τα επίσημα δεδομένα για ένα οικόπεδο σήμερα — και, με το GAIA, τι υπάρχει κάτω από αυτό.'),
+        'intro': ('Η AX GAIA Intelligence σας βοηθά να καταλάβετε τη γη στην Κύπρο. Το TerrAX δείχνει τι λένε σήμερα τα επίσημα '
+                  'δεδομένα για κάθε τεμάχιο — δωρεάν. Το GAIA, υπό ανάπτυξη, θα δείχνει τι κρύβεται κάτω από αυτό.'),
         'p_eyebrow': '01 / Τα προϊόντα μας', 'p_h2': 'Από τον επίσημο χάρτη στο υπέδαφος.',
-        'p_intro': ('Δύο προϊόντα με έναν στόχο: λιγότερες εκπλήξεις στο έδαφος. Το TerrAX διαβάζει ό,τι δημοσιεύουν οι δημόσιες αρχές '
-                    'για ένα τεμάχιο. Το GAIA προσθέτει δορυφορικά δεδομένα και μετρήσεις εδάφους για όσα οι χάρτες δεν δείχνουν.'),
-        'tx_alt': 'Ανάλυση του τεμαχίου 161 στη Φασούλα Πάφου στο TerrAX', 'live': 'Διαθέσιμο', 'tx_kicker': 'Ανάλυση γης &amp; τεμαχίου',
-        'tx_text': 'Ανάλυση οποιουδήποτε τεμαχίου στην Κύπρο σε περίπου ένα λεπτό: τι μπορείτε να κτίσετε, οι επίσημοι έλεγχοι, τι υπάρχει σήμερα στο τεμάχιο και τι υπάρχει κοντά.',
+        'p_intro': ('Δύο προϊόντα με έναν στόχο: λιγότερες εκπλήξεις στο έδαφος. Το TerrAX συγκεντρώνει σε λίγα δευτερόλεπτα όσα δημοσιεύουν '
+                    'οι δημόσιες αρχές για ένα τεμάχιο. Το GAIA αναπτύσσεται για να συνδυάζει δορυφορικά δεδομένα και μετρήσεις εδάφους, ώστε να δείχνει ό,τι δεν φαίνεται στους χάρτες.'),
+        'tx_alt': 'Επίσημοι έλεγχοι του TerrAX για ένα τεμάχιο, με θολωμένα τα στοιχεία ταυτότητας', 'live': 'Διαθέσιμο', 'tx_kicker': 'Ανάλυση γης &amp; τεμαχίου',
+        'tx_text': 'Αναλύστε οποιοδήποτε τεμάχιο στην Κύπρο σε λίγα δευτερόλεπτα — δωρεάν, χωρίς εγγραφή: πολεοδομική ζώνη και όροι δόμησης, επίσημοι έλεγχοι, τι υπάρχει σήμερα και τι βρίσκεται κοντά.',
         'tx_cta': 'Γνωρίστε το TerrAX', 'g_alt': 'Εννοιολογική απεικόνιση παρατήρησης της Γης πάνω από εργοτάξιο', 'dev': 'Σε ανάπτυξη',
         'g_kicker': 'Πληροφορία για το έδαφος',
         'g_text': ('Πλατφόρμα πληροφορίας για το έδαφος από το διάστημα, για κατασκευές και υποδομές. Συνδυάζει την παρατήρηση της Γης με '
@@ -196,11 +196,11 @@ HOME = {
         'g_cta': 'Γνωρίστε το GAIA',
         'w_eyebrow': '02 / Πώς δουλεύουμε', 'w_h2': 'Σαφείς απαντήσεις.<br>Ειλικρινή όρια.',
         'w': [('book', 'Πρώτα οι επίσημες πηγές', 'Κάθε στοιχείο προέρχεται από δημόσια αρχή ή ονομαστικό ανοιχτό σύνολο δεδομένων, με την ημερομηνία και τα όριά του δίπλα του.'),
-              ('check', 'Τι δείχνουν τα δεδομένα — και τι όχι', 'Δεν μαντεύουμε. Όπου χρειάζεται αδειούχος αρχιτέκτονας, μηχανικός ή δικηγόρος, το λέμε καθαρά.'),
+              ('check', 'Τι δείχνουν τα δεδομένα — και τι όχι', 'Δεν καλύπτουμε κενά με εικασίες: οι εκτιμήσεις σημειώνονται ως ενδεικτικές, όσα λείπουν φαίνονται ότι λείπουν, και όπου ένα ερώτημα χρειάζεται αδειούχο επαγγελματία, το λέμε καθαρά.'),
               ('layers', 'Από την επιφάνεια στο υπέδαφος', 'Το TerrAX συγκεντρώνει ό,τι είναι χαρτογραφημένο για ένα τεμάχιο. Το GAIA αναπτύσσεται για να προσθέσει ό,τι βρίσκεται από κάτω.')],
         'c_eyebrow': '03 / Η εταιρεία', 'c_h2': 'AX GAIA Intelligence',
-        'c_text': ['Η AX GAIA Intelligence Ltd είναι κυπριακή εταιρεία που αναπτύσσει πληροφορία για τη γη και το έδαφος από το διάστημα, για κατασκευές, υποδομές και ακίνητα.',
-                   'Συνεργάζεται με ένα δίκτυο συμβούλων (επιμετρητές, μηχανικούς και εργοληπτική εταιρεία) που ελέγχουν ό,τι αναπτύσσουμε σε πραγματικά έργα.'],
+        'c_text': ['Η AX GAIA Intelligence Ltd είναι κυπριακή εταιρεία που αναπτύσσει πληροφορία για τη γη και το έδαφος από το διάστημα.',
+                   'Συνεργάζεται με ένα δίκτυο συμβούλων που ελέγχουν ό,τι αναπτύσσουμε σε πραγματικά έργα.'],
     },
 }
 
@@ -226,12 +226,12 @@ def home(lang):
       <div class="section-head"><p class="eyebrow">{c['p_eyebrow']}</p><h2 id="products-title">{c['p_h2']}</h2><p class="section-intro">{c['p_intro']}</p></div>
       <div class="products">
         <article class="product-card">
-          <img src="/assets/terrax/overview-{lang}.webp" alt="{c['tx_alt']}" width="1600" height="1000" loading="lazy">
+          <img src="/assets/terrax/overview-{lang}.webp" alt="{c['tx_alt']}" width="2400" height="1500" loading="lazy">
           <div class="product-body">
             <div class="product-title"><h3>Terr<em>AX</em></h3><span class="badge badge-live">{c['live']}</span></div>
             <span class="product-kicker">{c['tx_kicker']}</span>
             <p>{c['tx_text']}</p>
-            <a class="button primary" href="{url(lang, 'terrax')}">{c['tx_cta']} <span aria-hidden="true">→</span></a>
+            <div class="product-actions"><a class="button primary" href="{APP_URL}">{T[lang]['open_tx']} <span aria-hidden="true">↗</span></a><a class="button" href="{url(lang, 'terrax')}">{c['tx_cta']} <span aria-hidden="true">→</span></a></div>
           </div>
         </article>
         <article class="product-card">
@@ -270,63 +270,65 @@ def home(lang):
 TX = {
     'en': {
         'title': 'TerrAX — Land and site intelligence for Cyprus · AX GAIA INTELLIGENCE',
-        'description': 'Analyse any parcel in Cyprus from official data: what you can build, official checks, the parcel today, what is nearby and a PDF report.',
+        'description': 'Analyse any parcel in Cyprus from official data: the planning zone, official checks, the parcel today, what is nearby and a PDF report.',
         'eyebrow': 'TerrAX · Land &amp; site intelligence', 'h1': 'Know a parcel<br>before you <em>commit to it.</em>',
         'lead': ('Find a parcel by address, sheet and plan, or on the map. TerrAX gathers what the Department of Lands and Surveys, '
-                 'the Geological Survey and other public bodies publish about it, and turns it into clear answers — in about a minute.'),
-        'cta': 'Request early access', 'see': 'See the report', 'fine': 'Free parcel analysis and PDF report · Greek and English',
-        'shot_alt': 'TerrAX overview of parcel 161 in Fasoula, Paphos: what you can build, things to check and the parcel today',
-        'shot_cap': 'Example: a real analysis of parcel 161, Fasoula (Paphos), from official data.',
+                 'the Geological Survey and other public bodies publish about it, and turns it into clear answers — in seconds.'),
+        'cta': 'Open TerrAX', 'see': 'See the report', 'fine': 'Free parcel analysis and report · Greek and English',
+        'shot_alt': 'TerrAX official checks for a parcel, identifying details blurred: planning and ownership, environment, ground and natural risks',
         'g_eyebrow': '01 / What you get', 'g_h2': 'Everything mapped about a parcel, on one screen.',
-        'g': [('house', 'What you can build', 'Planning zone, buildable floor area, site coverage, floors and height from the official DLS zone parameters — per zone when a parcel has several.'),
+        'g': [('house', 'Planning zone', 'The planning zone and its official DLS limits — building density, site coverage, floors and height — and how much of the parcel each zone covers.'),
               ('clipboard', 'Official checks', 'Geological suitability, seismic zone, landslides, floods, Natura 2000, coast protection, state land and more — each marked Check or Clear, with its source.'),
               ('terrain', 'The parcel today', 'Structures on the DLS map and from satellite detection, the nearest mapped road, slope, elevation and land cover.'),
               ('pin', 'Near the parcel', 'The nearest pharmacy, school, shop, café, bus stop and park, with straight-line distances and every place on the map.')],
         's_eyebrow': '02 / How it works', 's_h2': 'Three steps.',
         's': [('01', 'Find the parcel', 'Search by address or place, by sheet / plan and parcel number as on the title deed, or click it on the map.'),
-              ('02', 'Analyse', 'TerrAX reads the official layers for that exact boundary — usually in under a minute.'),
-              ('03', 'Read and share', 'See the answers on screen and download the PDF report to share with a buyer, an architect or a partner.')],
+              ('02', 'Analyse', 'TerrAX checks the official maps for that exact boundary — in seconds.'),
+              ('03', 'Read and share', 'See the answers on screen and download the free report to share with a buyer, an architect or a partner.')],
         'r_eyebrow': '03 / The report', 'r_h2': 'A report you can share.',
-        'r': ['Summary: the parcel, the map, what you can build and what to check', 'Planning and cadastre, zone by zone',
-              'Risks and environment, with the body behind each check', 'The parcel today and what is nearby', 'Sources, dates and limitations'],
-        'r_note': 'Every page carries its report number and a clear statement of what it is: a preliminary screening from official mapped data, not planning, legal or geotechnical advice.',
-        'r_alt': 'First page of the English TerrAX report for parcel 161 in Fasoula, Paphos',
+        'r': ['The parcel: area, planning zone, development plan, valuation, access, slope and elevation',
+              'Planning zone parameters, and what they do not take into account',
+              'Official checks: what needs attention and what is not in the official maps', 'What is nearby, with distances',
+              'Data sources and what the report is — and is not'],
+        'r_note': 'Two pages, in Greek or English. It states clearly what it is: preliminary information from official public data — not a certification, permit or confirmation of what may be built.',
+        'r_alt': 'First page of a free English TerrAX report, with identifying details blurred',
         'w_eyebrow': '04 / Who it is for', 'w_h2': 'Built for the people who decide on land.',
-        'w': [('briefcase', 'Developers', 'Screen parcels quickly: what the zone allows, what is already there and which checks need a professional.'),
+        'w': [('briefcase', 'Developers and investors', 'Screen parcels quickly: what the zone allows, what is already there and which checks need a professional.'),
               ('key', 'Real-estate professionals', 'Describe a property accurately and hand clients a clear, sourced report.'),
-              ('house', 'Owners and buyers', 'Understand your land before you sell, buy or brief an architect.')],
+              ('house', 'Owners and buyers', 'Understand a parcel before you sell or buy.')],
         'src': 'Built on data from the Department of Lands and Surveys, the Geological Survey Department, the Water Development Department, the Department of Environment, Copernicus and OpenStreetMap.',
-        'src_cta': 'Data &amp; Sources',
+        'src_cta': 'Data &amp; Sources', 'src_link': 'See all sources',
     },
     'el': {
         'title': 'TerrAX — Ανάλυση γης και τεμαχίου στην Κύπρο · AX GAIA INTELLIGENCE',
-        'description': 'Ανάλυση οποιουδήποτε τεμαχίου στην Κύπρο από επίσημα δεδομένα: τι μπορείτε να κτίσετε, επίσημοι έλεγχοι, το τεμάχιο σήμερα, τι υπάρχει κοντά και αναφορά PDF.',
+        'description': 'Ανάλυση οποιουδήποτε τεμαχίου στην Κύπρο από επίσημα δεδομένα: πολεοδομική ζώνη, επίσημοι έλεγχοι, το τεμάχιο σήμερα, τι υπάρχει κοντά και αναφορά PDF.',
         'eyebrow': 'TerrAX · Ανάλυση γης &amp; τεμαχίου', 'h1': 'Γνωρίστε ένα τεμάχιο<br><em>πριν δεσμευτείτε.</em>',
         'lead': ('Βρείτε ένα τεμάχιο με διεύθυνση, φύλλο και σχέδιο ή στον χάρτη. Το TerrAX συγκεντρώνει ό,τι δημοσιεύουν το Τμήμα '
-                 'Κτηματολογίου και Χωρομετρίας, η Γεωλογική Επισκόπηση και άλλοι δημόσιοι φορείς και το κάνει σαφείς απαντήσεις — σε περίπου ένα λεπτό.'),
-        'cta': 'Ζητήστε πρόσβαση', 'see': 'Δείτε την αναφορά', 'fine': 'Δωρεάν ανάλυση τεμαχίου και αναφορά PDF · Ελληνικά και Αγγλικά',
-        'shot_alt': 'Σύνοψη του TerrAX για το τεμάχιο 161 στη Φασούλα Πάφου: τι μπορείτε να κτίσετε, τι να ελέγξετε, το τεμάχιο σήμερα',
-        'shot_cap': 'Παράδειγμα: πραγματική ανάλυση του τεμαχίου 161 στη Φασούλα Πάφου, από επίσημα δεδομένα.',
+                 'Κτηματολογίου και Χωρομετρίας, η Γεωλογική Επισκόπηση και άλλοι δημόσιοι φορείς και το κάνει σαφείς απαντήσεις — σε δευτερόλεπτα.'),
+        'cta': 'Άνοιγμα TerrAX', 'see': 'Δείτε την αναφορά', 'fine': 'Δωρεάν ανάλυση τεμαχίου και αναφορά · Ελληνικά και Αγγλικά',
+        'shot_alt': 'Επίσημοι έλεγχοι του TerrAX για ένα τεμάχιο, με θολωμένα τα στοιχεία ταυτότητας: πολεοδομία και ιδιοκτησία, περιβάλλον, έδαφος και φυσικοί κίνδυνοι',
         'g_eyebrow': '01 / Τι παίρνετε', 'g_h2': 'Ό,τι είναι χαρτογραφημένο για ένα τεμάχιο, σε μία οθόνη.',
-        'g': [('house', 'Τι μπορείτε να κτίσετε', 'Πολεοδομική ζώνη, δομήσιμο εμβαδόν, κάλυψη, όροφοι και ύψος από τους επίσημους όρους ζώνης του ΤΚΧ — ανά ζώνη όταν το τεμάχιο έχει περισσότερες.'),
+        'g': [('house', 'Πολεοδομική ζώνη', 'Η πολεοδομική ζώνη και τα επίσημα όριά της από το ΤΚΧ — συντελεστής δόμησης, κάλυψη, όροφοι και ύψος — και πόσο από το τεμάχιο καλύπτει κάθε ζώνη.'),
               ('clipboard', 'Επίσημοι έλεγχοι', 'Γεωλογική καταλληλότητα, σεισμική ζώνη, κατολισθήσεις, πλημμύρες, Natura 2000, ζώνη προστασίας ακτής, κρατική γη και άλλα — με «Προσοχή» ή «Καθαρό» και την πηγή.'),
               ('terrain', 'Το τεμάχιο σήμερα', 'Κτίσματα στον χάρτη του ΤΚΧ και από δορυφορική ανίχνευση, ο πλησιέστερος χαρτογραφημένος δρόμος, κλίση, υψόμετρο και κάλυψη γης.'),
               ('pin', 'Κοντά στο τεμάχιο', 'Το πλησιέστερο φαρμακείο, σχολείο, κατάστημα, καφετέρια, στάση και πάρκο, με ευθεία απόσταση και όλα τα σημεία στον χάρτη.')],
         's_eyebrow': '02 / Πώς δουλεύει', 's_h2': 'Τρία βήματα.',
         's': [('01', 'Βρείτε το τεμάχιο', 'Αναζήτηση με διεύθυνση ή τοποθεσία, με φύλλο / σχέδιο και αριθμό τεμαχίου όπως στον τίτλο, ή με κλικ στον χάρτη.'),
-              ('02', 'Ανάλυση', 'Το TerrAX διαβάζει τα επίσημα επίπεδα για το συγκεκριμένο όριο — συνήθως σε λιγότερο από ένα λεπτό.'),
-              ('03', 'Διαβάστε και μοιραστείτε', 'Δείτε τις απαντήσεις στην οθόνη και κατεβάστε την αναφορά PDF για αγοραστή, αρχιτέκτονα ή συνεργάτη.')],
+              ('02', 'Ανάλυση', 'Το TerrAX ελέγχει τους επίσημους χάρτες για το συγκεκριμένο όριο — σε δευτερόλεπτα.'),
+              ('03', 'Διαβάστε και μοιραστείτε', 'Δείτε τις απαντήσεις στην οθόνη και κατεβάστε τη δωρεάν αναφορά για να τη μοιραστείτε με αγοραστή, αρχιτέκτονα ή συνεργάτη.')],
         'r_eyebrow': '03 / Η αναφορά', 'r_h2': 'Μια αναφορά που μπορείτε να μοιραστείτε.',
-        'r': ['Σύνοψη: το τεμάχιο, ο χάρτης, τι μπορείτε να κτίσετε και τι να ελέγξετε', 'Πολεοδομία και κτηματολόγιο, ζώνη προς ζώνη',
-              'Κίνδυνοι και περιβάλλον, με τον φορέα κάθε ελέγχου', 'Το τεμάχιο σήμερα και τι υπάρχει κοντά', 'Πηγές, ημερομηνίες και περιορισμοί'],
-        'r_note': 'Κάθε σελίδα έχει τον αριθμό της αναφοράς και δηλώνει καθαρά τι είναι: προκαταρκτικός έλεγχος από επίσημα χαρτογραφημένα δεδομένα, όχι πολεοδομική, νομική ή γεωτεχνική γνωμάτευση.',
-        'r_alt': 'Πρώτη σελίδα της ελληνικής αναφοράς TerrAX για το τεμάχιο 161 στη Φασούλα Πάφου',
+        'r': ['Το τεμάχιο: εμβαδόν, πολεοδομική ζώνη, σχέδιο ανάπτυξης, εκτίμηση, πρόσβαση, κλίση και υψόμετρο',
+              'Οι παράμετροι της πολεοδομικής ζώνης και τι δεν λαμβάνουν υπόψη',
+              'Επίσημοι έλεγχοι: τι χρειάζεται προσοχή και τι δεν βρέθηκε στους επίσημους χάρτες', 'Τι υπάρχει κοντά, με αποστάσεις',
+              'Πηγές δεδομένων και τι είναι — και τι δεν είναι — η αναφορά'],
+        'r_note': 'Δύο σελίδες, στα ελληνικά ή στα αγγλικά. Λέει ξεκάθαρα τι είναι: προκαταρκτική πληροφόρηση από επίσημα δημόσια δεδομένα — όχι πιστοποίηση, άδεια ή επιβεβαίωση του τι μπορεί να κτιστεί.',
+        'r_alt': 'Πρώτη σελίδα δωρεάν ελληνικής αναφοράς TerrAX, με θολωμένα τα στοιχεία ταυτότητας',
         'w_eyebrow': '04 / Για ποιους', 'w_h2': 'Για όσους παίρνουν αποφάσεις για τη γη.',
-        'w': [('briefcase', 'Developers', 'Γρήγορος έλεγχος τεμαχίων: τι επιτρέπει η ζώνη, τι υπάρχει ήδη και ποιοι έλεγχοι χρειάζονται επαγγελματία.'),
+        'w': [('briefcase', 'Developers και επενδυτές', 'Γρήγορος έλεγχος τεμαχίων: τι επιτρέπει η ζώνη, τι υπάρχει ήδη και ποιοι έλεγχοι χρειάζονται επαγγελματία.'),
               ('key', 'Επαγγελματίες ακινήτων', 'Ακριβής περιγραφή ενός ακινήτου και μια σαφής αναφορά με πηγές για τους πελάτες σας.'),
-              ('house', 'Ιδιοκτήτες και αγοραστές', 'Γνωρίστε τη γη σας πριν πουλήσετε, αγοράσετε ή μιλήσετε με αρχιτέκτονα.')],
+              ('house', 'Ιδιοκτήτες και αγοραστές', 'Γνωρίστε ένα τεμάχιο πριν πουλήσετε ή αγοράσετε.')],
         'src': 'Με δεδομένα από το Τμήμα Κτηματολογίου και Χωρομετρίας, τη Γεωλογική Επισκόπηση, το Τμήμα Αναπτύξεως Υδάτων, το Τμήμα Περιβάλλοντος, το Copernicus και το OpenStreetMap.',
-        'src_cta': 'Δεδομένα &amp; Πηγές',
+        'src_cta': 'Δεδομένα &amp; Πηγές', 'src_link': 'Δείτε όλες τις πηγές',
     },
 }
 
@@ -344,10 +346,10 @@ def terrax(lang):
         <p class="eyebrow"><span class="status-dot"></span>{c['eyebrow']}</p>
         <h1 id="hero-title">{c['h1']}</h1>
         <p class="lead">{c['lead']}</p>
-        <div class="actions"><a class="button primary" href="{url(lang, 'home')}#contact">{c['cta']} <span aria-hidden="true">↗</span></a><a class="button" href="#report">{c['see']} <span aria-hidden="true">↓</span></a></div>
+        <div class="actions"><a class="button primary" href="{APP_URL}">{c['cta']} <span aria-hidden="true">↗</span></a><a class="button" href="#report">{c['see']} <span aria-hidden="true">↓</span></a></div>
         <p class="fine">{c['fine']}</p>
       </div>
-      <figure><img class="shot" src="/assets/terrax/overview-{lang}.webp" alt="{c['shot_alt']}" width="1600" height="1000"><figcaption>{c['shot_cap']}</figcaption></figure>
+      <figure><img class="shot" src="/assets/terrax/overview-{lang}.webp" alt="{c['shot_alt']}" width="2400" height="1500"></figure>
     </div>
   </section>
 
@@ -371,7 +373,7 @@ def terrax(lang):
         <div><p class="eyebrow">{c['r_eyebrow']}</p><h2 id="report-title">{c['r_h2']}</h2><p class="section-intro">{c['r_note']}</p></div>
         <ol class="report-list">{report}</ol>
       </div>
-      <div class="report-paper"><img src="/assets/terrax/report-{lang}.webp" alt="{c['r_alt']}" width="1428" height="1160" loading="lazy"></div>
+      <div class="report-paper"><img src="/assets/terrax/report-{lang}.webp" alt="{c['r_alt']}" width="2000" height="1696" loading="lazy"></div>
     </div>
   </section>
 
@@ -383,7 +385,7 @@ def terrax(lang):
   </section>
 
   <section aria-label="{c['src_cta']}">
-    <div class="wrap sources-line"><p>{c['src']}</p><a class="button" href="{url(lang, 'data')}">{c['src_cta']} <span aria-hidden="true">→</span></a></div>
+    <div class="wrap sources-line"><p>{c['src']} <a class="sources-link" href="{url(lang, 'data')}">{c['src_link']} <span aria-hidden="true">→</span></a></p></div>
   </section>
 </main>
 '''
@@ -397,19 +399,21 @@ DS = {
         'description': 'Where TerrAX information comes from, how it is used, its limitations and an important notice.',
         'eyebrow': 'Data &amp; Sources', 'h1': 'Where our information comes from — and what it cannot tell you.',
         'intro': 'TerrAX brings together data published by public bodies and named open datasets. This page lists every source, how we use it and its limits.',
-        'updated': 'Last updated: 29 October 2026', 'h_sources': '1. Sources',
+        'updated': 'Last updated: 11 November 2026', 'h_sources': '1. Sources',
         'cols': ['Source', 'What we use', 'How it is kept', 'Licence or terms'],
-        'rows': [('Department of Lands and Surveys', 'Parcels, planning zones and their building parameters, buildings, roads, state land, coast protection zone, white zones, historical land use', 'Local copy refreshed weekly; some layers read live', 'CC BY 4.0 (open data); INSPIRE layers: terms being confirmed'),
-                 ('Geological Survey Department', 'Geological suitability zones, seismic zones, landslides, sinkholes, engineering boreholes, geology', 'Local copy refreshed weekly', 'Terms being confirmed'),
-                 ('Water Development Department', 'Flood zones (20, 100 and 500-year), rivers and streams', 'Read from the official services', 'Terms being confirmed'),
-                 ('Department of Environment', 'Natura 2000 sites, mapped habitats, other protected areas', 'Read from the official services', 'Terms being confirmed'),
+        'rows': [('Department of Lands and Surveys', 'Parcels, planning zones and their building parameters, buildings, roads, rivers, streams and lakes, state land, coast protection zone, white zones, other protected sites, geological formations, historical land use, historical aerial photographs on the map; contracts of sale deposited (Statistics)', 'Local copy refreshed weekly; some layers read live', 'CC BY 4.0 (open data); INSPIRE layers: terms being confirmed'),
+                 ('Geological Survey Department', 'Geological suitability zones, seismic zones, landslides, sinkholes, engineering boreholes', 'Local copy refreshed weekly', 'Terms being confirmed'),
+                 ('Water Development Department', 'Flood zones (20, 100 and 500-year)', 'Read from the official services', 'Terms being confirmed'),
+                 ('Department of Environment', 'Natura 2000 sites, mapped habitats', 'Read from the official services', 'Terms being confirmed'),
                  ('Copernicus / ESA', 'Elevation and slope (Copernicus DEM GLO-30), land cover (ESA WorldCover 2021)', 'Stored copy', 'Copernicus licence; CC BY 4.0'),
-                 ('OpenStreetMap contributors', 'Nearby places, base map in reports', 'Snapshot of the Cyprus extract, refreshed periodically', 'ODbL 1.0'),
+                 ('European Commission JRC (GHSL)', 'Built-up area (Statistics and map layer)', 'Stored copy of the published release', 'CC BY 4.0'),
+                 ('Eurostat / CYSTAT', 'House price and building permit indices (Statistics)', 'Stored copy, refreshed when new figures are published', 'Eurostat reuse policy; CYSTAT terms'),
+                 ('OpenStreetMap contributors', 'Nearby places; the on-screen map (drawn with Protomaps)', 'Snapshot of the Cyprus extract, refreshed periodically', 'ODbL 1.0'),
                  ('Microsoft', 'Building footprints detected from satellite imagery', 'Stored copy of the published release', 'ODbL 1.0'),
-                 ('Esri World Imagery', 'Satellite base map on screen only', 'Displayed, never stored or analysed', 'Esri terms of use')],
+                 ('Esri World Imagery (Vantor)', 'Satellite base map on screen only', 'Displayed, never stored or analysed', 'Esri terms of use')],
         'h_use': '2. How we use the data',
         'use': ['We measure: areas, distances and overlaps between the parcel boundary and each official layer.',
-                'We calculate only from official parameters, for example buildable floor area = zone area × building density.',
+                'We calculate only from official parameters, for example area from zone density = zone area × building density.',
                 'We do not estimate values, interpret development plans or decide permitted uses.',
                 'When an official dataset is missing or does not answer, we say so instead of filling the gap.'],
         'h_limits': '3. Limitations',
@@ -429,19 +433,21 @@ DS = {
         'description': 'Από πού προέρχονται τα στοιχεία του TerrAX, πώς χρησιμοποιούνται, οι περιορισμοί τους και σημαντική σημείωση.',
         'eyebrow': 'Δεδομένα &amp; Πηγές', 'h1': 'Από πού προέρχονται τα στοιχεία μας — και τι δεν μπορούν να σας πουν.',
         'intro': 'Το TerrAX συγκεντρώνει δεδομένα που δημοσιεύουν δημόσιοι φορείς και ονομαστικά ανοιχτά σύνολα δεδομένων. Εδώ θα βρείτε κάθε πηγή, πώς τη χρησιμοποιούμε και τα όριά της.',
-        'updated': 'Τελευταία ενημέρωση: 29 Οκτωβρίου 2026', 'h_sources': '1. Πηγές',
+        'updated': 'Τελευταία ενημέρωση: 11 Νοεμβρίου 2026', 'h_sources': '1. Πηγές',
         'cols': ['Πηγή', 'Τι χρησιμοποιούμε', 'Πώς ενημερώνεται', 'Άδεια ή όροι'],
-        'rows': [('Τμήμα Κτηματολογίου και Χωρομετρίας', 'Τεμάχια, πολεοδομικές ζώνες και οι όροι δόμησής τους, κτίρια, δρόμοι, κρατική γη, ζώνη προστασίας ακτής, λευκές ζώνες, ιστορική χρήση γης', 'Τοπικό αντίγραφο με εβδομαδιαία ενημέρωση· ορισμένα επίπεδα απευθείας', 'CC BY 4.0 (ανοιχτά δεδομένα)· επίπεδα INSPIRE: οι όροι επιβεβαιώνονται'),
-                 ('Γεωλογική Επισκόπηση', 'Ζώνες γεωλογικής καταλληλότητας, σεισμικές ζώνες, κατολισθήσεις, καταβόθρες, γεωτεχνικές γεωτρήσεις, γεωλογία', 'Τοπικό αντίγραφο με εβδομαδιαία ενημέρωση', 'Οι όροι επιβεβαιώνονται'),
-                 ('Τμήμα Αναπτύξεως Υδάτων', 'Ζώνες πλημμύρας (20, 100 και 500 ετών), ποτάμια και ρέματα', 'Απευθείας από τις επίσημες υπηρεσίες', 'Οι όροι επιβεβαιώνονται'),
-                 ('Τμήμα Περιβάλλοντος', 'Περιοχές Natura 2000, χαρτογραφημένοι οικότοποι, άλλες προστατευόμενες περιοχές', 'Απευθείας από τις επίσημες υπηρεσίες', 'Οι όροι επιβεβαιώνονται'),
+        'rows': [('Τμήμα Κτηματολογίου και Χωρομετρίας', 'Τεμάχια, πολεοδομικές ζώνες και οι όροι δόμησής τους, κτίρια, δρόμοι, ποτάμια, ρέματα και λίμνες, κρατική γη, ζώνη προστασίας ακτής, λευκές ζώνες, άλλες προστατευόμενες περιοχές, γεωλογικοί σχηματισμοί, ιστορική χρήση γης, παλιές αεροφωτογραφίες στον χάρτη· κατατεθειμένα πωλητήρια έγγραφα (Στατιστικά)', 'Τοπικό αντίγραφο με εβδομαδιαία ενημέρωση· ορισμένα επίπεδα απευθείας', 'CC BY 4.0 (ανοιχτά δεδομένα)· επίπεδα INSPIRE: οι όροι επιβεβαιώνονται'),
+                 ('Γεωλογική Επισκόπηση', 'Ζώνες γεωλογικής καταλληλότητας, σεισμικές ζώνες, κατολισθήσεις, καταβόθρες, γεωτεχνικές γεωτρήσεις', 'Τοπικό αντίγραφο με εβδομαδιαία ενημέρωση', 'Οι όροι επιβεβαιώνονται'),
+                 ('Τμήμα Αναπτύξεως Υδάτων', 'Ζώνες πλημμύρας (20, 100 και 500 ετών)', 'Απευθείας από τις επίσημες υπηρεσίες', 'Οι όροι επιβεβαιώνονται'),
+                 ('Τμήμα Περιβάλλοντος', 'Περιοχές Natura 2000, χαρτογραφημένοι οικότοποι', 'Απευθείας από τις επίσημες υπηρεσίες', 'Οι όροι επιβεβαιώνονται'),
                  ('Copernicus / ESA', 'Υψόμετρο και κλίση (Copernicus DEM GLO-30), κάλυψη γης (ESA WorldCover 2021)', 'Αποθηκευμένο αντίγραφο', 'Άδεια Copernicus· CC BY 4.0'),
-                 ('Συντελεστές OpenStreetMap', 'Κοντινά σημεία, υπόβαθρο χάρτη στις αναφορές', 'Στιγμιότυπο των δεδομένων της Κύπρου, με περιοδική ενημέρωση', 'ODbL 1.0'),
+                 ('Ευρωπαϊκή Επιτροπή JRC (GHSL)', 'Δομημένη επιφάνεια (Στατιστικά και επίπεδο χάρτη)', 'Αποθηκευμένο αντίγραφο της δημοσιευμένης έκδοσης', 'CC BY 4.0'),
+                 ('Eurostat / ΣΤΑΤΥΣ', 'Δείκτες τιμών κατοικιών και οικοδομικών αδειών (Στατιστικά)', 'Αποθηκευμένο αντίγραφο, ενημερώνεται όταν δημοσιεύονται νέα στοιχεία', 'Πολιτική επαναχρησιμοποίησης Eurostat· όροι ΣΤΑΤΥΣ'),
+                 ('Συντελεστές OpenStreetMap', 'Κοντινά σημεία· ο χάρτης στην οθόνη (σχεδιασμένος με Protomaps)', 'Στιγμιότυπο των δεδομένων της Κύπρου, με περιοδική ενημέρωση', 'ODbL 1.0'),
                  ('Microsoft', 'Περιγράμματα κτισμάτων από δορυφορική ανίχνευση', 'Αποθηκευμένο αντίγραφο της δημοσιευμένης έκδοσης', 'ODbL 1.0'),
-                 ('Esri World Imagery', 'Δορυφορικό υπόβαθρο μόνο στην οθόνη', 'Εμφανίζεται, δεν αποθηκεύεται ούτε αναλύεται', 'Όροι χρήσης Esri')],
+                 ('Esri World Imagery (Vantor)', 'Δορυφορικό υπόβαθρο μόνο στην οθόνη', 'Εμφανίζεται, δεν αποθηκεύεται ούτε αναλύεται', 'Όροι χρήσης Esri')],
         'h_use': '2. Πώς χρησιμοποιούμε τα δεδομένα',
         'use': ['Μετράμε: εμβαδά, αποστάσεις και επικαλύψεις του ορίου του τεμαχίου με κάθε επίσημο επίπεδο.',
-                'Υπολογίζουμε μόνο από επίσημους όρους, για παράδειγμα δομήσιμο εμβαδόν = εμβαδόν ζώνης × συντελεστής δόμησης.',
+                'Υπολογίζουμε μόνο από επίσημους όρους, για παράδειγμα εμβαδόν βάσει συντελεστή = εμβαδόν ζώνης × συντελεστής δόμησης.',
                 'Δεν εκτιμούμε αξίες, δεν ερμηνεύουμε σχέδια ανάπτυξης και δεν κρίνουμε επιτρεπόμενες χρήσεις.',
                 'Όταν ένα επίσημο σύνολο δεδομένων λείπει ή δεν απαντά, το λέμε αντί να συμπληρώνουμε το κενό.'],
         'h_limits': '3. Περιορισμοί',
@@ -497,7 +503,7 @@ GAIA_EL = [
     ('A clearer picture.<br>From space to<br><em>SUBSURFACE.</em>', 'Μια πιο καθαρή εικόνα.<br>Από το διάστημα<br><em>ΣΤΟ ΥΠΕΔΑΦΟΣ.</em>'),
     ('GAIA is a space-enabled ground intelligence platform for construction and infrastructure. It combines Earth Observation with ground-sensing data to provide early indications of potential ground risks and support better-targeted site and geotechnical investigations.',
      'Το GAIA είναι πλατφόρμα πληροφορίας για το έδαφος από το διάστημα, για κατασκευές και υποδομές. Συνδυάζει την παρατήρηση της Γης με μετρήσεις εδάφους, ώστε να δίνει έγκαιρες ενδείξεις πιθανών εδαφικών κινδύνων και να στηρίζει πιο στοχευμένες έρευνες πεδίου και γεωτεχνικές έρευνες.'),
-    ('Start a conversation', 'Ας μιλήσουμε'), ('Explore Gaia', 'Γνωρίστε το GAIA'),
+    ('Explore GAIA', 'Γνωρίστε το GAIA'), ('>In development<', '>Σε ανάπτυξη<'),
     ('EARLY INSIGHT. BETTER-INFORMED DECISIONS.', 'ΕΓΚΑΙΡΗ ΓΝΩΣΗ. ΚΑΛΥΤΕΡΕΣ ΑΠΟΦΑΣΕΙΣ.'),
     ('01 / THE PLATFORM', '01 / Η ΠΛΑΤΦΟΡΜΑ'),
     ('Understand the ground.<br>Before the groundwork.', 'Γνωρίστε το έδαφος.<br>Πριν από τις εργασίες.'),
@@ -518,32 +524,31 @@ GAIA_EL = [
     ('From data to<br>decision-ready insights.', 'Από τα δεδομένα<br>σε γνώση για αποφάσεις.'),
     ('GAIA integrates satellite-derived ground behaviour with ground-sensing data to generate clear, site-specific indicators that support engineering decisions.',
      'Το GAIA συνδυάζει τη συμπεριφορά του εδάφους από δορυφόρο με μετρήσεις εδάφους, για σαφείς ενδείξεις για κάθε χώρο που στηρίζουν μηχανικές αποφάσεις.'),
-    ('Explore the process', 'Δείτε τη διαδικασία'), ('aria-label="GAIA process"', 'aria-label="Η διαδικασία του GAIA"'),
+    ('aria-label="GAIA process"', 'aria-label="Η διαδικασία του GAIA"'),
     ('Conceptual aerial view of a coastal investigation site', 'Εννοιολογική αεροφωτογραφία παράκτιου χώρου έρευνας'),
     ('Conceptual Earth Observation heatmap', 'Εννοιολογικός θερμικός χάρτης παρατήρησης της Γης'),
     ('Conceptual site data interpretation', 'Εννοιολογική ερμηνεία δεδομένων χώρου'),
     ('Conceptual construction and investigation site', 'Εννοιολογικός χώρος κατασκευής και έρευνας'),
     ('<h3>Collect</h3><p>Earth Observation data and complementary ground-sensing information.</p>', '<h3>Συλλογή</h3><p>Δεδομένα παρατήρησης της Γης και συμπληρωματικές μετρήσεις εδάφους.</p>'),
-    ('<h3>Analyse</h3><p>Process and integrate datasets to identify patterns, anomalies and areas of interest.</p>', '<h3>Ανάλυση</h3><p>Επεξεργασία και συνδυασμός δεδομένων για τον εντοπισμό μοτίβων, ανωμαλιών και περιοχών ενδιαφέροντος.</p>'),
+    ('<h3>Analyse</h3><p>Process and integrate datasets with machine-learning models to identify patterns, anomalies and areas of interest.</p>', '<h3>Ανάλυση</h3><p>Επεξεργασία και συνδυασμός δεδομένων με μοντέλα μηχανικής μάθησης για τον εντοπισμό μοτίβων, ανωμαλιών και περιοχών ενδιαφέροντος.</p>'),
     ('<h3>Interpret</h3><p>Generate clear, engineering-relevant outputs.</p>', '<h3>Ερμηνεία</h3><p>Σαφή αποτελέσματα, χρήσιμα για μηχανικούς.</p>'),
     ('<h3>Support</h3><p>Help prioritise further investigation and reduce uncertainty in early project stages.</p>', '<h3>Υποστήριξη</h3><p>Βοήθεια στην ιεράρχηση της περαιτέρω έρευνας και λιγότερη αβεβαιότητα στα πρώτα στάδια του έργου.</p>'),
     ('03 / IMPACT', '03 / ΟΦΕΛΟΣ'),
     ('Supporting safer,<br>smarter and more efficient<br>infrastructure development.', 'Για πιο ασφαλή,<br>έξυπνη και αποδοτική<br>ανάπτυξη υποδομών.'),
-    ('By providing early, evidence-based insights on ground conditions, GAIA helps reduce uncertainty, focus investigation efforts, and support more informed decision-making across the project lifecycle.',
-     'Με έγκαιρη, τεκμηριωμένη γνώση για τις συνθήκες του εδάφους, το GAIA βοηθά να μειωθεί η αβεβαιότητα, να εστιαστούν οι έρευνες και να παίρνονται καλύτερες αποφάσεις σε όλη τη διάρκεια του έργου.'),
-    ('Discuss your project', 'Συζητήστε το έργο σας'),
+    ('By providing early insights on ground conditions, GAIA is designed to help reduce uncertainty, focus investigation efforts and support more informed decisions across the project lifecycle.',
+     'Με έγκαιρη γνώση για τις συνθήκες του εδάφους, το GAIA σχεδιάζεται για να βοηθά να μειωθεί η αβεβαιότητα, να εστιαστούν οι έρευνες και να παίρνονται καλύτερες αποφάσεις σε όλη τη διάρκεια του έργου.'),
     ('<h3>Reduced<br>uncertainty</h3><p>Better understanding of ground conditions earlier.</p>', '<h3>Λιγότερη<br>αβεβαιότητα</h3><p>Καλύτερη γνώση των συνθηκών του εδάφους, νωρίτερα.</p>'),
     ('<h3>More efficient<br>investigations</h3><p>Focus resources where they are needed most.</p>', '<h3>Πιο αποδοτικές<br>έρευνες</h3><p>Οι πόροι πηγαίνουν εκεί που χρειάζονται περισσότερο.</p>'),
     ('<h3>More informed<br>decisions</h3><p>Support safer, more resilient and cost-effective projects.</p>', '<h3>Καλύτερες<br>αποφάσεις</h3><p>Πιο ασφαλή, ανθεκτικά και οικονομικά έργα.</p>'),
     ('Conceptual coastal construction site with an Earth Observation data overlay', 'Εννοιολογικό παράκτιο εργοτάξιο με επίστρωση δεδομένων παρατήρησης της Γης'),
     ('04 / DEVELOPMENT', '04 / ΑΝΑΠΤΥΞΗ'),
     ('Built for real-world<br>conditions.', 'Σχεδιασμένο για<br>πραγματικές συνθήκες.'),
-    ('GAIA is advancing through structured development stages, from architecture design and indicator modelling towards pilot validation, to establish early-stage subsurface intelligence.',
-     'Το GAIA προχωρά σε οργανωμένα στάδια ανάπτυξης, από τον σχεδιασμό της αρχιτεκτονικής και τη μοντελοποίηση δεικτών προς την πιλοτική επικύρωση, για έγκαιρη πληροφορία για το υπέδαφος.'),
-    ('Learn about the development', 'Μάθετε για την ανάπτυξη'),
-    ('Development focuses on integrating data sources, modelling engineering-relevant indicators, and preparing for pilot validation in real project conditions.',
-     'Η ανάπτυξη εστιάζει στον συνδυασμό πηγών δεδομένων, στη μοντελοποίηση δεικτών χρήσιμων για μηχανικούς και στην προετοιμασία πιλοτικής επικύρωσης σε πραγματικά έργα.'),
-    ('GAIA development phases: architecture design, indicator modelling, and pilot validation', 'Στάδια ανάπτυξης του GAIA: σχεδιασμός αρχιτεκτονικής, μοντελοποίηση δεικτών και πιλοτική επικύρωση'),
+    ('GAIA has moved through architecture design and indicator modelling and is now in pilot validation: its indicators are being tested against ground-sensing surveys and geotechnical data from a real site in Cyprus.',
+     'Το GAIA πέρασε από τον σχεδιασμό της αρχιτεκτονικής και τη μοντελοποίηση δεικτών και βρίσκεται τώρα σε πιλοτική επικύρωση: οι δείκτες του ελέγχονται με μετρήσεις εδάφους και γεωτεχνικά δεδομένα από πραγματικό χώρο στην Κύπρο.'),
+    ('<strong>Available today: TerrAX</strong> — free parcel analysis from official data.', '<strong>Διαθέσιμο σήμερα: TerrAX</strong> — δωρεάν ανάλυση τεμαχίου από επίσημα δεδομένα.'),
+    ('href="/terrax/">Discover TerrAX', 'href="/el/terrax/">Γνωρίστε το TerrAX'), ('* Illustrations on this page are conceptual.', '* Οι εικόνες της σελίδας είναι ενδεικτικές.'),
+    ('✓ Completed', '✓ Ολοκληρώθηκε'), ('● In progress', '● Σε εξέλιξη'), ('01 · Architecture design', '01 · Σχεδιασμός αρχιτεκτονικής'), ('02 · Indicator modelling', '02 · Μοντελοποίηση δεικτών'), ('03 · Pilot validation', '03 · Πιλοτική επικύρωση'),
+    ('An AI framework that fuses satellite and ground-sensing data.', 'Ένα πλαίσιο τεχνητής νοημοσύνης που συνδυάζει δορυφορικά δεδομένα και μετρήσεις εδάφους.'), ('Engineering-relevant indicators of subsurface conditions.', 'Δείκτες για τις συνθήκες του υπεδάφους, χρήσιμοι για μηχανικούς.'), ('Testing the indicators against field surveys and geotechnical data at a real site in Cyprus.', 'Έλεγχος των δεικτών με μετρήσεις πεδίου και γεωτεχνικά δεδομένα σε πραγματικό χώρο στην Κύπρο.'),
 ]
 
 
@@ -566,16 +571,16 @@ PRIVACY = {
     'en': {
         'title': 'Privacy Policy · AX GAIA INTELLIGENCE',
         'description': 'How AX GAIA Intelligence Ltd handles personal data on this website and in email.',
-        'eyebrow': 'Legal', 'h1': 'Privacy Policy', 'updated': 'Last updated: 29 October 2026',
+        'eyebrow': 'Legal', 'h1': 'Privacy Policy', 'updated': 'Last updated: 11 November 2026',
         'intro': 'This policy explains what personal data is processed when you visit this website or email us, why, and what rights you have.',
         'sections': [
             ('1. Who we are', [
                 'AX GAIA Intelligence Ltd, a company registered in Cyprus, is the controller of the personal data described here.',
                 f'Contact for any privacy question: <a href="mailto:{EMAIL}">{EMAIL}</a>.',
-                'This policy covers this website and email sent to us. The TerrAX platform, when it opens to users, will have its own privacy notice and terms.']),
+                'This policy covers this website and email sent to us. The TerrAX application at <a href="https://app.axgaiaintelligence.com/">app.axgaiaintelligence.com</a> has its own <a href="https://app.axgaiaintelligence.com/privacy">Privacy Policy</a> and <a href="https://app.axgaiaintelligence.com/terms">Terms of Use</a>.']),
             ('2. What we process and why', [
                 '<strong>When you visit the website.</strong> Our hosting provider processes technical data such as your IP address, browser and device type, the pages requested and the time, to deliver the pages and keep the service secure. We do not receive or keep these records. Legal basis: our legitimate interest in running a secure website (GDPR Article 6(1)(f)).',
-                '<strong>When you email us.</strong> We use your email address, your name and whatever you write, to reply and, if you ask for early access, to arrange it. Legal basis: steps you ask for before a possible agreement (Article 6(1)(b)) and our legitimate interest in answering enquiries (Article 6(1)(f)).']),
+                '<strong>When you email us.</strong> We use your email address, your name and whatever you write, to reply and to deal with your request. Legal basis: steps you ask for before a possible agreement (Article 6(1)(b)) and our legitimate interest in answering enquiries (Article 6(1)(f)).']),
             ('3. What we do not do', [
                 'There are no forms, accounts, cookies, analytics, advertising or tracking on this website.',
                 'Fonts, images and scripts are served from this website itself; no third-party content is loaded when you open a page.',
@@ -589,7 +594,7 @@ PRIVACY = {
                 'You can ask to access, correct or delete your personal data, to restrict or object to its use, and to receive it in a portable form. Email us and we will reply within one month.',
                 'You can also complain to the Office of the Commissioner for Personal Data Protection in Cyprus (<a href="https://www.dataprotection.gov.cy" target="_blank" rel="noopener noreferrer">dataprotection.gov.cy</a>).']),
             ('7. Other websites', [
-                'Links to other websites, such as LinkedIn or Space BIC, are covered by those websites’ own privacy policies.']),
+                'Links to other websites, such as Space BIC, are covered by those websites’ own privacy policies.']),
             ('8. Changes', [
                 'If this policy changes, we will update this page and the date at the top.']),
         ],
@@ -597,16 +602,16 @@ PRIVACY = {
     'el': {
         'title': 'Πολιτική απορρήτου · AX GAIA INTELLIGENCE',
         'description': 'Πώς η AX GAIA Intelligence Ltd χειρίζεται τα προσωπικά δεδομένα σε αυτή την ιστοσελίδα και στο email.',
-        'eyebrow': 'Νομικά', 'h1': 'Πολιτική απορρήτου', 'updated': 'Τελευταία ενημέρωση: 29 Οκτωβρίου 2026',
+        'eyebrow': 'Νομικά', 'h1': 'Πολιτική απορρήτου', 'updated': 'Τελευταία ενημέρωση: 11 Νοεμβρίου 2026',
         'intro': 'Η πολιτική αυτή εξηγεί ποια προσωπικά δεδομένα επεξεργάζονται όταν επισκέπτεστε την ιστοσελίδα ή μας στέλνετε email, για ποιο λόγο, και ποια δικαιώματα έχετε.',
         'sections': [
             ('1. Ποιοι είμαστε', [
                 'Υπεύθυνη επεξεργασίας των προσωπικών δεδομένων που περιγράφονται εδώ είναι η AX GAIA Intelligence Ltd, εταιρεία εγγεγραμμένη στην Κύπρο.',
                 f'Για κάθε ερώτηση σχετικά με το απόρρητο: <a href="mailto:{EMAIL}">{EMAIL}</a>.',
-                'Η πολιτική καλύπτει αυτή την ιστοσελίδα και τα email που μας στέλνετε. Η πλατφόρμα TerrAX, όταν ανοίξει σε χρήστες, θα έχει δική της ενημέρωση απορρήτου και όρους χρήσης.']),
+                'Η πολιτική καλύπτει αυτή την ιστοσελίδα και τα email που μας στέλνετε. Η εφαρμογή TerrAX στο <a href="https://app.axgaiaintelligence.com/">app.axgaiaintelligence.com</a> έχει δική της <a href="https://app.axgaiaintelligence.com/privacy">Πολιτική Απορρήτου</a> και <a href="https://app.axgaiaintelligence.com/terms">Όρους Χρήσης</a>.']),
             ('2. Τι επεξεργαζόμαστε και γιατί', [
                 '<strong>Όταν επισκέπτεστε την ιστοσελίδα.</strong> Ο πάροχος φιλοξενίας επεξεργάζεται τεχνικά στοιχεία, όπως τη διεύθυνση IP, τον τύπο browser και συσκευής, τις σελίδες που ζητήθηκαν και την ώρα, για να εμφανίσει τις σελίδες και να κρατήσει την υπηρεσία ασφαλή. Εμείς δεν λαμβάνουμε ούτε κρατάμε αυτά τα αρχεία. Νομική βάση: το έννομο συμφέρον μας να λειτουργεί η ιστοσελίδα με ασφάλεια (άρθρο 6(1)(στ) ΓΚΠΔ).',
-                '<strong>Όταν μας στέλνετε email.</strong> Χρησιμοποιούμε τη διεύθυνση email, το όνομά σας και ό,τι μας γράψετε, για να σας απαντήσουμε και, αν ζητήσετε πρόσβαση, για να την οργανώσουμε. Νομική βάση: ενέργειες που ζητάτε πριν από πιθανή συμφωνία (άρθρο 6(1)(β)) και το έννομο συμφέρον μας να απαντάμε σε ερωτήματα (άρθρο 6(1)(στ)).']),
+                '<strong>Όταν μας στέλνετε email.</strong> Χρησιμοποιούμε τη διεύθυνση email, το όνομά σας και ό,τι μας γράψετε, για να σας απαντήσουμε και να ικανοποιήσουμε το αίτημά σας. Νομική βάση: ενέργειες που ζητάτε πριν από πιθανή συμφωνία (άρθρο 6(1)(β)) και το έννομο συμφέρον μας να απαντάμε σε ερωτήματα (άρθρο 6(1)(στ)).']),
             ('3. Τι δεν κάνουμε', [
                 'Η ιστοσελίδα δεν έχει φόρμες, λογαριασμούς, cookies, στατιστικά επισκεψιμότητας, διαφημίσεις ή παρακολούθηση.',
                 'Γραμματοσειρές, εικόνες και scripts φορτώνονται από την ίδια την ιστοσελίδα· όταν ανοίγετε μια σελίδα δεν φορτώνεται περιεχόμενο τρίτων.',
@@ -620,7 +625,7 @@ PRIVACY = {
                 'Μπορείτε να ζητήσετε πρόσβαση, διόρθωση ή διαγραφή των προσωπικών σας δεδομένων, περιορισμό ή εναντίωση στη χρήση τους, και να τα λάβετε σε φορητή μορφή. Στείλτε μας email και θα απαντήσουμε μέσα σε έναν μήνα.',
                 'Μπορείτε επίσης να υποβάλετε παράπονο στο Γραφείο της Επιτρόπου Προστασίας Δεδομένων Προσωπικού Χαρακτήρα (<a href="https://www.dataprotection.gov.cy" target="_blank" rel="noopener noreferrer">dataprotection.gov.cy</a>).']),
             ('7. Άλλες ιστοσελίδες', [
-                'Οι σύνδεσμοι προς άλλες ιστοσελίδες, όπως το LinkedIn ή το Space BIC, διέπονται από τις δικές τους πολιτικές απορρήτου.']),
+                'Οι σύνδεσμοι προς άλλες ιστοσελίδες, όπως το Space BIC, διέπονται από τις δικές τους πολιτικές απορρήτου.']),
             ('8. Αλλαγές', [
                 'Αν η πολιτική αλλάξει, θα ενημερώσουμε αυτή τη σελίδα και την ημερομηνία στην κορυφή.']),
         ],
