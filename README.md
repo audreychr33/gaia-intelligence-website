@@ -1,12 +1,12 @@
 # AX GAIA Intelligence website
 
-Static company website for axgaiaintelligence.com: the company, TerrAX, GAIA and Data & Sources, in English and Greek (`/el/`).
+Static company website for axgaiaintelligence.com: the company, Ter-AX, GAIA and Data & Sources, in English and Greek (`/el/`).
 
 ## Editing
 
 - Page text lives in `tools/build_site.py`; the GAIA page body is `tools/gaia_main_en.html`.
 - Rebuild the pages after any change: `python tools/build_site.py`.
-- Styles: `assets/index.css` (shared) and `assets/pages.css` (company, TerrAX and Data & Sources pages).
+- Styles: `assets/index.css` (shared) and `assets/pages.css` (company, Ter-AX and Data & Sources pages).
 
 ## Local preview
 

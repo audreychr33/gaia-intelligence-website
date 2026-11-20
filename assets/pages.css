@@ -1,4 +1,4 @@
-/* Company, TerrAX and Data & Sources pages. Builds on index.css (shared header, footer, buttons, sections). */
+/* Company, Ter-AX and Data & Sources pages. Builds on index.css (shared header, footer, buttons, sections). */
 
 /* Header: current page, language switch and the access button stay the last link. */
 .links a[aria-current="page"] { color:var(--accent); }
@@ -33,7 +33,7 @@ figcaption { color:var(--muted); font-size:12px; line-height:1.5; margin-top:10p
 .company-grid { display:grid; grid-template-columns:1fr 1.2fr; gap:58px; align-items:start; }
 .company-grid p:not(.eyebrow) { color:#cbd7e0; font-size:15px; line-height:1.75; margin:0 0 16px; }
 
-/* TerrAX */
+/* Ter-AX */
 .tx-hero { border-bottom:1px solid var(--border); }
 .tx-hero-grid { display:grid; grid-template-columns:0.8fr 1.45fr; gap:44px; align-items:center; padding-block:64px; }
 .tx-hero-grid figure { margin:0; }
