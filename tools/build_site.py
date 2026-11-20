@@ -59,7 +59,7 @@ T = {
         'skip': 'Skip to content', 'home_label': 'AX GAIA INTELLIGENCE home', 'primary': 'Primary',
         'nav': [('home', 'Company'), ('terrax', 'Ter-AX'), ('gaia', 'GAIA')], 'contact': 'Contact',
         'platform': 'Platform', 'open_tx': 'Open Ter-AX', 'talk': 'Talk to us', 'copy': 'Copy address', 'copied': 'Copied', 'lang_label': 'Language',
-        'rights': 'All rights reserved.', 'data': 'Data &amp; Sources', 'privacy': 'Privacy Policy',
+        'rights': 'All rights reserved.', 'company': 'AX GAIA Intelligence Ltd · Registration no. HE 486926 · Registered office: 7 Savva Zinonos, Flat/Office 1, 8020 Paphos, Cyprus', 'data': 'Data &amp; Sources', 'privacy': 'Privacy Policy',
         'spacebic': ('AX GAIA INTELLIGENCE LTD participates in the Space BIC by ERATOSTHENES CoE, which is supported and funded by '
                      'the Cyprus Deputy Ministry of Research, Innovation and Digital Policy (DMRID).'),
     },
@@ -67,7 +67,7 @@ T = {
         'skip': 'Μετάβαση στο περιεχόμενο', 'home_label': 'AX GAIA INTELLIGENCE, αρχική', 'primary': 'Κύριο μενού',
         'nav': [('home', 'Εταιρεία'), ('terrax', 'Ter-AX'), ('gaia', 'GAIA')], 'contact': 'Επικοινωνία',
         'platform': 'Πλατφόρμα', 'open_tx': 'Άνοιγμα Ter-AX', 'talk': 'Επικοινωνήστε μαζί μας', 'copy': 'Αντιγραφή διεύθυνσης', 'copied': 'Αντιγράφηκε', 'lang_label': 'Γλώσσα',
-        'rights': 'Με την επιφύλαξη παντός δικαιώματος.', 'data': 'Δεδομένα &amp; Πηγές', 'privacy': 'Πολιτική απορρήτου',
+        'rights': 'Με την επιφύλαξη παντός δικαιώματος.', 'company': 'AX GAIA Intelligence Ltd · Αρ. εγγραφής ΗΕ 486926 · Εγγεγραμμένο γραφείο: Σάββα Ζήνωνος 7, Διαμέρισμα/Γραφείο 1, 8020 Πάφος, Κύπρος', 'data': 'Δεδομένα &amp; Πηγές', 'privacy': 'Πολιτική απορρήτου',
         'spacebic': ('Η AX GAIA INTELLIGENCE LTD συμμετέχει στο Space BIC του ERATOSTHENES CoE, που υποστηρίζεται και χρηματοδοτείται '
                      'από το Υφυπουργείο Έρευνας, Καινοτομίας και Ψηφιακής Πολιτικής (ΥΦΕΚΑΨΠ).'),
     },
@@ -122,6 +122,7 @@ def footer(lang):
     return f'''<footer class="footer">
   <div class="wrap">
     <div class="footer-meta"><span>© <span id="y"></span> AX GAIA INTELLIGENCE. {t['rights']}</span><span class="footer-links"><a href="{url(lang, 'data')}">{t['data']}</a> · <a href="{url(lang, 'privacy')}">{t['privacy']}</a></span></div>
+    <p class="footer-company">{t['company']} · <a href="mailto:{EMAIL}">{EMAIL}</a></p>
     <div class="partner"><a href="https://spacebic.cy" target="_blank" rel="noopener noreferrer" aria-label="Space BIC by ERATOSTHENES CoE"><img src="/assets/spacebic-logo.png" alt="Space BIC by ERATOSTHENES CoE" width="210" loading="lazy"></a><p>{t['spacebic']}</p></div>
   </div>
 </footer>
