@@ -130,9 +130,6 @@ p { margin-top:0; }
 .footer-meta { display:flex; justify-content:space-between; align-items:center; gap:20px; border-block:1px solid #21313e; padding:16px 0; font-size:12px; color:#a9bdca; }
 .footer-meta a { text-decoration:none; white-space:nowrap; }
 .footer-meta a:hover { color:var(--accent); }
-.footer-company { margin:12px 0 0; font-size:12px; color:#8fa5b3; text-align:center; }
-.footer-company a { text-decoration:none; }
-.footer-company a:hover { color:var(--accent); }
 .footer-divider { color:#576572; }
 .partner { display:flex; flex-direction:column; align-items:center; gap:20px; padding-top:16px; color:#b8c7d3; text-align:center; }
 .partner a { display:inline-flex; padding:10px 16px; border:1px solid #2a3545; border-radius:18px; background:#111c2b; }

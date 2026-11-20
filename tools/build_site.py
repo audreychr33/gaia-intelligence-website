@@ -59,7 +59,7 @@ T = {
         'skip': 'Skip to content', 'home_label': 'AX GAIA INTELLIGENCE home', 'primary': 'Primary',
         'nav': [('home', 'Company'), ('terrax', 'Ter-AX'), ('gaia', 'GAIA')], 'contact': 'Contact',
         'platform': 'Platform', 'open_tx': 'Open Ter-AX', 'talk': 'Talk to us', 'copy': 'Copy address', 'copied': 'Copied', 'lang_label': 'Language',
-        'rights': 'All rights reserved.', 'company': 'AX GAIA Intelligence Ltd · Registration no. HE 486926 · Registered office: 7 Savva Zinonos, Flat/Office 1, 8020 Paphos, Cyprus', 'data': 'Data &amp; Sources', 'privacy': 'Privacy Policy',
+        'rights': 'All rights reserved.', 'data': 'Data &amp; Sources', 'privacy': 'Privacy Policy',
         'spacebic': ('AX GAIA INTELLIGENCE LTD participates in the Space BIC by ERATOSTHENES CoE, which is supported and funded by '
                      'the Cyprus Deputy Ministry of Research, Innovation and Digital Policy (DMRID).'),
     },
@@ -67,7 +67,7 @@ T = {
         'skip': 'Μετάβαση στο περιεχόμενο', 'home_label': 'AX GAIA INTELLIGENCE, αρχική', 'primary': 'Κύριο μενού',
         'nav': [('home', 'Εταιρεία'), ('terrax', 'Ter-AX'), ('gaia', 'GAIA')], 'contact': 'Επικοινωνία',
         'platform': 'Πλατφόρμα', 'open_tx': 'Άνοιγμα Ter-AX', 'talk': 'Επικοινωνήστε μαζί μας', 'copy': 'Αντιγραφή διεύθυνσης', 'copied': 'Αντιγράφηκε', 'lang_label': 'Γλώσσα',
-        'rights': 'Με την επιφύλαξη παντός δικαιώματος.', 'company': 'AX GAIA Intelligence Ltd · Αρ. εγγραφής ΗΕ 486926 · Εγγεγραμμένο γραφείο: Σάββα Ζήνωνος 7, Διαμέρισμα/Γραφείο 1, 8020 Πάφος, Κύπρος', 'data': 'Δεδομένα &amp; Πηγές', 'privacy': 'Πολιτική απορρήτου',
+        'rights': 'Με την επιφύλαξη παντός δικαιώματος.', 'data': 'Δεδομένα &amp; Πηγές', 'privacy': 'Πολιτική απορρήτου',
         'spacebic': ('Η AX GAIA INTELLIGENCE LTD συμμετέχει στο Space BIC του ERATOSTHENES CoE, που υποστηρίζεται και χρηματοδοτείται '
                      'από το Υφυπουργείο Έρευνας, Καινοτομίας και Ψηφιακής Πολιτικής (ΥΦΕΚΑΨΠ).'),
     },
@@ -122,7 +122,6 @@ def footer(lang):
     return f'''<footer class="footer">
   <div class="wrap">
     <div class="footer-meta"><span>© <span id="y"></span> AX GAIA INTELLIGENCE. {t['rights']}</span><span class="footer-links"><a href="{url(lang, 'data')}">{t['data']}</a> · <a href="{url(lang, 'privacy')}">{t['privacy']}</a></span></div>
-    <p class="footer-company">{t['company']} · <a href="mailto:{EMAIL}">{EMAIL}</a></p>
     <div class="partner"><a href="https://spacebic.cy" target="_blank" rel="noopener noreferrer" aria-label="Space BIC by ERATOSTHENES CoE"><img src="/assets/spacebic-logo.png" alt="Space BIC by ERATOSTHENES CoE" width="210" loading="lazy"></a><p>{t['spacebic']}</p></div>
   </div>
 </footer>
@@ -588,11 +587,11 @@ PRIVACY = {
     'en': {
         'title': 'Privacy Policy · AX GAIA INTELLIGENCE',
         'description': 'How AX GAIA Intelligence Ltd handles personal data on this website and in email.',
-        'eyebrow': 'Legal', 'h1': 'Privacy Policy', 'updated': 'Last updated: 11 November 2026',
+        'eyebrow': 'Legal', 'h1': 'Privacy Policy', 'updated': 'Last updated: 20 November 2026',
         'intro': 'This policy explains what personal data is processed when you visit this website or email us, why, and what rights you have.',
         'sections': [
             ('1. Who we are', [
-                'AX GAIA Intelligence Ltd, a company registered in Cyprus, is the controller of the personal data described here.',
+                'AX GAIA Intelligence Ltd, a private limited company registered in Cyprus (registration no. HE 486926), is the controller of the personal data described here. Registered office: 7 Savva Zinonos, Flat/Office 1, 8020 Paphos, Cyprus.',
                 f'Contact for any privacy question: <a href="mailto:{EMAIL}">{EMAIL}</a>.',
                 'This policy covers this website and email sent to us. The Ter-AX application at <a href="https://tx.axgaiaintelligence.com/">tx.axgaiaintelligence.com</a> has its own <a href="https://tx.axgaiaintelligence.com/privacy">Privacy Policy</a> and <a href="https://tx.axgaiaintelligence.com/terms">Terms of Use</a>.']),
             ('2. What we process and why', [
@@ -619,11 +618,11 @@ PRIVACY = {
     'el': {
         'title': 'Πολιτική απορρήτου · AX GAIA INTELLIGENCE',
         'description': 'Πώς η AX GAIA Intelligence Ltd χειρίζεται τα προσωπικά δεδομένα σε αυτή την ιστοσελίδα και στο email.',
-        'eyebrow': 'Νομικά', 'h1': 'Πολιτική απορρήτου', 'updated': 'Τελευταία ενημέρωση: 11 Νοεμβρίου 2026',
+        'eyebrow': 'Νομικά', 'h1': 'Πολιτική απορρήτου', 'updated': 'Τελευταία ενημέρωση: 20 Νοεμβρίου 2026',
         'intro': 'Η πολιτική αυτή εξηγεί ποια προσωπικά δεδομένα επεξεργάζονται όταν επισκέπτεστε την ιστοσελίδα ή μας στέλνετε email, για ποιο λόγο, και ποια δικαιώματα έχετε.',
         'sections': [
             ('1. Ποιοι είμαστε', [
-                'Υπεύθυνη επεξεργασίας των προσωπικών δεδομένων που περιγράφονται εδώ είναι η AX GAIA Intelligence Ltd, εταιρεία εγγεγραμμένη στην Κύπρο.',
+                'Υπεύθυνη επεξεργασίας των προσωπικών δεδομένων που περιγράφονται εδώ είναι η AX GAIA Intelligence Ltd, ιδιωτική εταιρεία περιορισμένης ευθύνης εγγεγραμμένη στην Κύπρο (αρ. εγγραφής ΗΕ 486926). Εγγεγραμμένο γραφείο: Σάββα Ζήνωνος 7, Διαμέρισμα/Γραφείο 1, 8020 Πάφος, Κύπρος.',
                 f'Για κάθε ερώτηση σχετικά με το απόρρητο: <a href="mailto:{EMAIL}">{EMAIL}</a>.',
                 'Η πολιτική καλύπτει αυτή την ιστοσελίδα και τα email που μας στέλνετε. Η εφαρμογή Ter-AX στο <a href="https://tx.axgaiaintelligence.com/">tx.axgaiaintelligence.com</a> έχει δική της <a href="https://tx.axgaiaintelligence.com/privacy">Πολιτική Απορρήτου</a> και <a href="https://tx.axgaiaintelligence.com/terms">Όρους Χρήσης</a>.']),
             ('2. Τι επεξεργαζόμαστε και γιατί', [
