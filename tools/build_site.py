@@ -1,7 +1,7 @@
 """Build the static company website in English and Greek.
 
 Run from the repository root: python tools/build_site.py
-It writes index.html, terrax/, gaia/, data-sources/, privacy/ and their Greek versions under el/,
+It writes index.html, terrax/, gaia/, privacy/ and their Greek versions under el/,
 plus privacy.html, which forwards the old address to privacy/.
 The GAIA page body is today's page, kept as it is (tools/gaia_main_en.html), with the shared header and footer.
 Only plain HTML and the local CSS/JS files are produced: no external requests, no inline styles or scripts
@@ -19,7 +19,7 @@ SHOW_REPORT = False  # the report section of the Ter-AX page; hidden for now (us
 CSP = ("default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; "
        "form-action 'none'; object-src 'none'; frame-src 'none'; connect-src 'none';")
 
-PAGES = {'home': '', 'terrax': 'terrax/', 'gaia': 'gaia/', 'data': 'data-sources/', 'privacy': 'privacy/'}
+PAGES = {'home': '', 'terrax': 'terrax/', 'gaia': 'gaia/', 'privacy': 'privacy/'}
 
 # Icons. The GAIA set is today's; the rest are Lucide (ISC licence) outlines.
 ICON_LIBRARY = '''<svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -59,7 +59,7 @@ T = {
         'skip': 'Skip to content', 'home_label': 'AX GAIA INTELLIGENCE home', 'primary': 'Primary',
         'nav': [('home', 'Company'), ('terrax', 'Ter-AX'), ('gaia', 'GAIA')], 'contact': 'Contact',
         'platform': 'Platform', 'open_tx': 'Open Ter-AX', 'talk': 'Talk to us', 'copy': 'Copy address', 'copied': 'Copied', 'lang_label': 'Language',
-        'rights': 'All rights reserved.', 'data': 'Data &amp; Sources', 'privacy': 'Privacy Policy',
+        'rights': 'All rights reserved.', 'privacy': 'Privacy Policy',
         'spacebic': ('AX GAIA INTELLIGENCE LTD participates in the Space BIC by ERATOSTHENES CoE, which is supported and funded by '
                      'the Cyprus Deputy Ministry of Research, Innovation and Digital Policy (DMRID).'),
     },
@@ -67,7 +67,7 @@ T = {
         'skip': 'Μετάβαση στο περιεχόμενο', 'home_label': 'AX GAIA INTELLIGENCE, αρχική', 'primary': 'Κύριο μενού',
         'nav': [('home', 'Εταιρεία'), ('terrax', 'Ter-AX'), ('gaia', 'GAIA')], 'contact': 'Επικοινωνία',
         'platform': 'Πλατφόρμα', 'open_tx': 'Άνοιγμα Ter-AX', 'talk': 'Επικοινωνήστε μαζί μας', 'copy': 'Αντιγραφή διεύθυνσης', 'copied': 'Αντιγράφηκε', 'lang_label': 'Γλώσσα',
-        'rights': 'Με την επιφύλαξη παντός δικαιώματος.', 'data': 'Δεδομένα &amp; Πηγές', 'privacy': 'Πολιτική απορρήτου',
+        'rights': 'Με την επιφύλαξη παντός δικαιώματος.', 'privacy': 'Πολιτική απορρήτου',
         'spacebic': ('Η AX GAIA INTELLIGENCE LTD συμμετέχει στο Space BIC του ERATOSTHENES CoE, που υποστηρίζεται και χρηματοδοτείται '
                      'από το Υφυπουργείο Έρευνας, Καινοτομίας και Ψηφιακής Πολιτικής (ΥΦΕΚΑΨΠ).'),
     },
@@ -121,7 +121,7 @@ def footer(lang):
     t = T[lang]
     return f'''<footer class="footer">
   <div class="wrap">
-    <div class="footer-meta"><span>© <span id="y"></span> AX GAIA INTELLIGENCE. {t['rights']}</span><span class="footer-links"><a href="{url(lang, 'data')}">{t['data']}</a> · <a href="{url(lang, 'privacy')}">{t['privacy']}</a></span></div>
+    <div class="footer-meta"><span>© <span id="y"></span> AX GAIA INTELLIGENCE. {t['rights']}</span><span class="footer-links"><a href="{url(lang, 'privacy')}">{t['privacy']}</a></span></div>
     <div class="partner"><a href="https://spacebic.cy" target="_blank" rel="noopener noreferrer" aria-label="Space BIC by ERATOSTHENES CoE"><img src="/assets/spacebic-logo.png" alt="Space BIC by ERATOSTHENES CoE" width="210" loading="lazy"></a><p>{t['spacebic']}</p></div>
   </div>
 </footer>
@@ -298,7 +298,7 @@ TX = {
               ('key', 'Real-estate professionals', 'Describe a property accurately and hand clients a clear, sourced report.'),
               ('house', 'Owners and buyers', 'Understand a parcel before you sell or buy.')],
         'src': 'Built on data from the Department of Lands and Surveys, the Geological Survey Department, the Water Development Department, the Department of Environment, Copernicus and OpenStreetMap.',
-        'src_cta': 'Data &amp; Sources', 'src_link': 'See all sources',
+        'src_cta': 'Data sources', 'src_link': 'In Ter-AX, every result shows its source.',
     },
     'el': {
         'title': 'Ter-AX — Ανάλυση γης και τεμαχίου στην Κύπρο · AX GAIA INTELLIGENCE',
@@ -329,7 +329,7 @@ TX = {
               ('key', 'Επαγγελματίες ακινήτων', 'Ακριβής περιγραφή ενός ακινήτου και μια σαφής αναφορά με πηγές για τους πελάτες σας.'),
               ('house', 'Ιδιοκτήτες και αγοραστές', 'Γνωρίστε ένα τεμάχιο πριν πουλήσετε ή αγοράσετε.')],
         'src': 'Με δεδομένα από το Τμήμα Κτηματολογίου και Χωρομετρίας, τη Γεωλογική Επισκόπηση, το Τμήμα Αναπτύξεως Υδάτων, το Τμήμα Περιβάλλοντος, το Copernicus και το OpenStreetMap.',
-        'src_cta': 'Δεδομένα &amp; Πηγές', 'src_link': 'Δείτε όλες τις πηγές',
+        'src_cta': 'Πηγές δεδομένων', 'src_link': 'Στο Ter-AX, κάθε αποτέλεσμα δείχνει την πηγή του.',
     },
 }
 
@@ -389,128 +389,11 @@ def terrax(lang):
   </section>
 
   <section aria-label="{c['src_cta']}">
-    <div class="wrap sources-line"><p>{c['src']} <a class="sources-link" href="{url(lang, 'data')}">{c['src_link']} <span aria-hidden="true">→</span></a></p></div>
+    <div class="wrap sources-line"><p>{c['src']} {c['src_link']}</p></div>
   </section>
 </main>
 '''
     return head(lang, 'terrax', c['title'], c['description']) + header(lang, 'terrax') + body + footer(lang)
-
-
-# ---------------------------------------------------------------- Data & Sources
-DS = {
-    'en': {
-        'title': 'Data and Sources · AX GAIA INTELLIGENCE',
-        'description': 'Where Ter-AX information comes from, how it is used, its limitations and an important notice.',
-        'eyebrow': 'Data &amp; Sources', 'h1': 'Where our information comes from — and what it cannot tell you.',
-        'intro': 'Ter-AX brings together data published by public bodies and named open datasets. This page lists every source, how we use it and its limits.',
-        'updated': 'Last updated: 13 November 2026', 'h_sources': '1. Sources',
-        'cols': ['Source', 'What we use', 'How it is kept', 'Licence or terms'],
-        'rows': [('Department of Lands and Surveys', 'Parcels, planning zones and their building parameters, buildings, roads, rivers, streams and lakes, state land, coast protection zone, white zones, other protected sites, geological formations, historical land use, historical aerial photographs on the map, postal-code areas, EAC pylons and high-voltage lines; property details and General Valuation of a parcel (eServices); contracts of sale, transfers and foreign buyers (Statistics)', 'Local copy refreshed weekly; some layers read live', 'CC BY 4.0 (open data); INSPIRE layers: terms being confirmed'),
-                 ('Geological Survey Department', 'Geological suitability zones, seismic zones, landslides, sinkholes, engineering boreholes', 'Local copy refreshed weekly', 'Terms being confirmed'),
-                 ('Water Development Department', 'Flood zones (20, 100 and 500-year); drinking-water reservoir protection zones', 'Flood zones read from the official services; reservoir zones as a local copy', 'Flood zones: terms being confirmed; reservoir zones: CC BY 4.0'),
-                 ('Department of Environment', 'Natura 2000 sites, mapped habitats; strategic noise maps 2022 for roads and airports (Climate &amp; energy)', 'Natura and habitats read from the official services; noise maps as a local copy', 'Natura and habitats: terms being confirmed; noise maps: CC BY 4.0'),
-                 ('Copernicus / ESA', 'Elevation and slope (Copernicus DEM GLO-30), land cover (ESA WorldCover 2021)', 'Stored copy', 'Copernicus licence; CC BY 4.0'),
-                 ('European Commission JRC (GHSL)', 'Built-up area (Statistics and map layer)', 'Stored copy of the published release', 'CC BY 4.0'),
-                 ('Central Bank of Cyprus', 'Residential property price index by district and type (Statistics)', 'Stored copy, refreshed each quarter', 'Free to reuse with attribution; shown as published'),
-                 ('Statistical Service (CYSTAT) / Eurostat', 'House price index, consumer prices and building permits (Statistics)', 'Stored copy, refreshed when new figures are published', 'CYSTAT terms (reuse with attribution); Eurostat reuse policy'),
-                 ('Global Solar Atlas (World Bank Group / ESMAP, data © Solargis)', 'Solar potential: PV output, sunlight, best panel tilt (Climate &amp; energy)', 'Stored copy of the published release', 'CC BY 4.0'),
-                 ('TerraClimate (Climatology Lab)', 'Climate 1991–2020: temperature, rain, humidity (Climate &amp; energy)', 'Stored copy of the published release', 'CC0 1.0'),
-                 ('CHELSA (Swiss Federal Institute WSL)', 'Climate projections 2041–2070 from five climate models (Climate &amp; energy)', 'Stored copy of the published release', 'CC BY 4.0'),
-                 ('European Environment Agency', 'Air quality 2023: fine particles (PM2.5) and nitrogen dioxide (Climate &amp; energy)', 'Stored copy of the published release', 'CC BY 4.0'),
-                 ('Global Wind Atlas (DTU Wind Energy / World Bank Group)', 'Mean wind speed at 10 m and 100 m (Climate &amp; energy); Davis et al. 2023, BAMS 104(8)', 'Stored copy of the published release', 'CC BY 4.0'),
-                 ('OpenStreetMap contributors', 'Nearby places; key distances (airports, hospitals, police, fire stations, bus stops, sea and more); the on-screen map (drawn with Protomaps)', 'Snapshot of the Cyprus extract, refreshed periodically', 'ODbL 1.0'),
-                 ('Microsoft', 'Building footprints detected from satellite imagery', 'Stored copy of the published release', 'ODbL 1.0'),
-                 ('Esri World Imagery (Vantor)', 'Satellite base map on screen only', 'Displayed, never stored or analysed', 'Esri terms of use')],
-        'h_use': '2. How we use the data',
-        'use': ['We measure: areas, distances and overlaps between the parcel boundary and each official layer.',
-                'We calculate only from official parameters, for example area from zone density = zone area × building density.',
-                'We do not estimate values, interpret development plans or decide permitted uses.',
-                'When an official dataset is missing or does not answer, we say so instead of filling the gap.'],
-        'h_limits': '3. Limitations',
-        'limits': ['Ter-AX is a preliminary screening based on available mapped data.',
-                   'It does not replace title or encumbrance searches, valuation, planning advice, planning or building permission, environmental assessment, ecological or geotechnical investigation, or confirmation of utility connections.',
-                   'No mapped issue does not mean there is no risk, restriction or missing data.',
-                   'Dataset dates and coverage vary. The date we retrieved data is not the date a rule took legal effect.',
-                   'The DLS building map is incomplete and undated; satellite detection shows what is visible, not whether it is permitted or registered.',
-                   'Distances are straight lines, not routes or legal access. OpenStreetMap data is community data and may be incomplete.'],
-        'h_notice': '4. Important notice',
-        'notice': ['Ter-AX is an independent service of AX GAIA Intelligence Ltd. It is not affiliated with, endorsed by or acting for the Department of Lands and Surveys or any other public body named on this page.',
-                   'Information is provided for preliminary screening only. It is not planning, legal, valuation, engineering or investment advice. Confirm anything you rely on with a licensed architect, town planner, engineer or lawyer.'],
-        'h_corr': '5. Corrections', 'corr': 'Found something wrong or out of date? Tell us and we will check it against the source.',
-    },
-    'el': {
-        'title': 'Δεδομένα και Πηγές · AX GAIA INTELLIGENCE',
-        'description': 'Από πού προέρχονται τα στοιχεία του Ter-AX, πώς χρησιμοποιούνται, οι περιορισμοί τους και σημαντική σημείωση.',
-        'eyebrow': 'Δεδομένα &amp; Πηγές', 'h1': 'Από πού προέρχονται τα στοιχεία μας — και τι δεν μπορούν να σας πουν.',
-        'intro': 'Το Ter-AX συγκεντρώνει δεδομένα που δημοσιεύουν δημόσιοι φορείς και ονομαστικά ανοιχτά σύνολα δεδομένων. Εδώ θα βρείτε κάθε πηγή, πώς τη χρησιμοποιούμε και τα όριά της.',
-        'updated': 'Τελευταία ενημέρωση: 13 Νοεμβρίου 2026', 'h_sources': '1. Πηγές',
-        'cols': ['Πηγή', 'Τι χρησιμοποιούμε', 'Πώς ενημερώνεται', 'Άδεια ή όροι'],
-        'rows': [('Τμήμα Κτηματολογίου και Χωρομετρίας', 'Τεμάχια, πολεοδομικές ζώνες και οι όροι δόμησής τους, κτίρια, δρόμοι, ποτάμια, ρέματα και λίμνες, κρατική γη, ζώνη προστασίας ακτής, λευκές ζώνες, άλλες προστατευόμενες περιοχές, γεωλογικοί σχηματισμοί, ιστορική χρήση γης, παλιές αεροφωτογραφίες στον χάρτη, ταχυδρομικοί κώδικες, πυλώνες και γραμμές υψηλής τάσης ΑΗΚ· στοιχεία ακινήτου και Γενική Εκτίμηση τεμαχίου (eServices)· πωλητήρια έγγραφα, μεταβιβάσεις και ξένοι αγοραστές (Στατιστικά)', 'Τοπικό αντίγραφο με εβδομαδιαία ενημέρωση· ορισμένα επίπεδα απευθείας', 'CC BY 4.0 (ανοιχτά δεδομένα)· επίπεδα INSPIRE: οι όροι επιβεβαιώνονται'),
-                 ('Γεωλογική Επισκόπηση', 'Ζώνες γεωλογικής καταλληλότητας, σεισμικές ζώνες, κατολισθήσεις, καταβόθρες, γεωτεχνικές γεωτρήσεις', 'Τοπικό αντίγραφο με εβδομαδιαία ενημέρωση', 'Οι όροι επιβεβαιώνονται'),
-                 ('Τμήμα Αναπτύξεως Υδάτων', 'Ζώνες πλημμύρας (20, 100 και 500 ετών)· ζώνες προστασίας ταμιευτήρων πόσιμου νερού', 'Πλημμύρες απευθείας από τις επίσημες υπηρεσίες· ταμιευτήρες ως τοπικό αντίγραφο', 'Πλημμύρες: οι όροι επιβεβαιώνονται· ταμιευτήρες: CC BY 4.0'),
-                 ('Τμήμα Περιβάλλοντος', 'Περιοχές Natura 2000, χαρτογραφημένοι οικότοποι· στρατηγικοί χάρτες θορύβου 2022 για δρόμους και αεροδρόμια (Κλίμα &amp; ενέργεια)', 'Natura και οικότοποι απευθείας από τις επίσημες υπηρεσίες· χάρτες θορύβου ως τοπικό αντίγραφο', 'Natura και οικότοποι: οι όροι επιβεβαιώνονται· χάρτες θορύβου: CC BY 4.0'),
-                 ('Copernicus / ESA', 'Υψόμετρο και κλίση (Copernicus DEM GLO-30), κάλυψη γης (ESA WorldCover 2021)', 'Αποθηκευμένο αντίγραφο', 'Άδεια Copernicus· CC BY 4.0'),
-                 ('Ευρωπαϊκή Επιτροπή JRC (GHSL)', 'Δομημένη επιφάνεια (Στατιστικά και επίπεδο χάρτη)', 'Αποθηκευμένο αντίγραφο της δημοσιευμένης έκδοσης', 'CC BY 4.0'),
-                 ('Κεντρική Τράπεζα Κύπρου', 'Δείκτης τιμών κατοικιών ανά επαρχία και τύπο (Στατιστικά)', 'Αποθηκευμένο αντίγραφο, ενημερώνεται κάθε τρίμηνο', 'Ελεύθερη χρήση με αναφορά· εμφανίζεται όπως δημοσιεύεται'),
-                 ('Στατιστική Υπηρεσία (ΚΥΣΤΑΤ) / Eurostat', 'Δείκτης τιμών κατοικιών, τιμές καταναλωτή και άδειες οικοδομής (Στατιστικά)', 'Αποθηκευμένο αντίγραφο, ενημερώνεται όταν δημοσιεύονται νέα στοιχεία', 'Όροι ΚΥΣΤΑΤ (χρήση με αναφορά)· πολιτική επαναχρησιμοποίησης Eurostat'),
-                 ('Global Solar Atlas (Ομάδα Παγκόσμιας Τράπεζας / ESMAP, δεδομένα © Solargis)', 'Ηλιακό δυναμικό: παραγωγή φωτοβολταϊκού, ηλιακή ακτινοβολία, βέλτιστη κλίση (Κλίμα &amp; ενέργεια)', 'Αποθηκευμένο αντίγραφο της δημοσιευμένης έκδοσης', 'CC BY 4.0'),
-                 ('TerraClimate (Climatology Lab)', 'Κλίμα 1991–2020: θερμοκρασία, βροχή, υγρασία (Κλίμα &amp; ενέργεια)', 'Αποθηκευμένο αντίγραφο της δημοσιευμένης έκδοσης', 'CC0 1.0'),
-                 ('CHELSA (Ελβετικό Ομοσπονδιακό Ινστιτούτο WSL)', 'Κλιματικές προβλέψεις 2041–2070 από πέντε κλιματικά μοντέλα (Κλίμα &amp; ενέργεια)', 'Αποθηκευμένο αντίγραφο της δημοσιευμένης έκδοσης', 'CC BY 4.0'),
-                 ('Ευρωπαϊκός Οργανισμός Περιβάλλοντος', 'Ποιότητα αέρα 2023: λεπτά σωματίδια (PM2.5) και διοξείδιο του αζώτου (Κλίμα &amp; ενέργεια)', 'Αποθηκευμένο αντίγραφο της δημοσιευμένης έκδοσης', 'CC BY 4.0'),
-                 ('Global Wind Atlas (DTU Wind Energy / Ομάδα Παγκόσμιας Τράπεζας)', 'Μέση ταχύτητα ανέμου στα 10 m και 100 m (Κλίμα &amp; ενέργεια)· Davis et al. 2023, BAMS 104(8)', 'Αποθηκευμένο αντίγραφο της δημοσιευμένης έκδοσης', 'CC BY 4.0'),
-                 ('Συντελεστές OpenStreetMap', 'Κοντινά σημεία· βασικές αποστάσεις (αεροδρόμια, νοσοκομεία, αστυνομία, πυροσβεστική, στάσεις λεωφορείων, θάλασσα κ.ά.)· ο χάρτης στην οθόνη (σχεδιασμένος με Protomaps)', 'Στιγμιότυπο των δεδομένων της Κύπρου, με περιοδική ενημέρωση', 'ODbL 1.0'),
-                 ('Microsoft', 'Περιγράμματα κτισμάτων από δορυφορική ανίχνευση', 'Αποθηκευμένο αντίγραφο της δημοσιευμένης έκδοσης', 'ODbL 1.0'),
-                 ('Esri World Imagery (Vantor)', 'Δορυφορικό υπόβαθρο μόνο στην οθόνη', 'Εμφανίζεται, δεν αποθηκεύεται ούτε αναλύεται', 'Όροι χρήσης Esri')],
-        'h_use': '2. Πώς χρησιμοποιούμε τα δεδομένα',
-        'use': ['Μετράμε: εμβαδά, αποστάσεις και επικαλύψεις του ορίου του τεμαχίου με κάθε επίσημο επίπεδο.',
-                'Υπολογίζουμε μόνο από επίσημους όρους, για παράδειγμα εμβαδόν βάσει συντελεστή = εμβαδόν ζώνης × συντελεστής δόμησης.',
-                'Δεν εκτιμούμε αξίες, δεν ερμηνεύουμε σχέδια ανάπτυξης και δεν κρίνουμε επιτρεπόμενες χρήσεις.',
-                'Όταν ένα επίσημο σύνολο δεδομένων λείπει ή δεν απαντά, το λέμε αντί να συμπληρώνουμε το κενό.'],
-        'h_limits': '3. Περιορισμοί',
-        'limits': ['Το Ter-AX είναι προκαταρκτικός έλεγχος με βάση τα διαθέσιμα χαρτογραφημένα δεδομένα.',
-                   'Δεν αντικαθιστά έρευνα τίτλου και βαρών, εκτίμηση αξίας, πολεοδομική συμβουλή, πολεοδομική ή οικοδομική άδεια, περιβαλλοντική μελέτη, οικολογική ή γεωτεχνική διερεύνηση, ή επιβεβαίωση συνδέσεων με δίκτυα.',
-                   'Η απουσία χαρτογραφημένου ζητήματος δεν σημαίνει ότι δεν υπάρχει κίνδυνος, περιορισμός ή ελλιπή δεδομένα.',
-                   'Οι ημερομηνίες και η κάλυψη των δεδομένων διαφέρουν. Η ημερομηνία λήψης δεν είναι η ημερομηνία νομικής ισχύος ενός κανόνα.',
-                   'Ο χάρτης κτιρίων του ΤΚΧ δεν είναι πλήρης ούτε χρονολογημένος· η δορυφορική ανίχνευση δείχνει τι φαίνεται, όχι αν ένα κτίσμα είναι νόμιμο ή εγγεγραμμένο.',
-                   'Οι αποστάσεις είναι ευθείες, όχι διαδρομές ή νόμιμη πρόσβαση. Τα δεδομένα OpenStreetMap είναι κοινοτικά και μπορεί να μην είναι πλήρη.'],
-        'h_notice': '4. Σημαντική σημείωση',
-        'notice': ['Το Ter-AX είναι ανεξάρτητη υπηρεσία της AX GAIA Intelligence Ltd. Δεν συνδέεται, δεν εγκρίνεται και δεν ενεργεί για λογαριασμό του Τμήματος Κτηματολογίου και Χωρομετρίας ή άλλου δημόσιου φορέα που αναφέρεται σε αυτή τη σελίδα.',
-                   'Οι πληροφορίες δίνονται μόνο για προκαταρκτικό έλεγχο. Δεν αποτελούν πολεοδομική, νομική, εκτιμητική, μηχανική ή επενδυτική συμβουλή. Επιβεβαιώστε ό,τι χρειάζεστε με αδειούχο αρχιτέκτονα, πολεοδόμο, μηχανικό ή δικηγόρο.'],
-        'h_corr': '5. Διορθώσεις', 'corr': 'Βρήκατε κάτι λάθος ή παλιό; Πείτε μας και θα το ελέγξουμε με την πηγή.',
-    },
-}
-
-
-def data_sources(lang):
-    c = DS[lang]
-    head_row = ''.join(f'<th scope="col">{x}</th>' for x in c['cols'])
-    rows = ''.join('<tr>' + ''.join(f'<td>{x}</td>' for x in row) + '</tr>' for row in c['rows'])
-    li = lambda items: ''.join(f'<li>{x}</li>' for x in items)
-    notice = ''.join(f'<p>{x}</p>' for x in c['notice'])
-    body = f'''<main id="top" tabindex="-1">
-  <section class="doc-hero" aria-labelledby="hero-title">
-    <div class="wrap"><p class="eyebrow">{c['eyebrow']}</p><h1 id="hero-title">{c['h1']}</h1><p class="section-intro">{c['intro']}</p><p class="updated">{c['updated']}</p></div>
-  </section>
-  <section class="section" aria-labelledby="sources-title">
-    <div class="wrap"><h2 id="sources-title">{c['h_sources']}</h2>
-      <div class="table-box"><table class="sources-table"><thead><tr>{head_row}</tr></thead><tbody>{rows}</tbody></table></div>
-    </div>
-  </section>
-  <section class="impact section">
-    <div class="wrap doc-columns">
-      <div><h2>{c['h_use']}</h2><ul class="doc-list">{li(c['use'])}</ul></div>
-      <div><h2>{c['h_limits']}</h2><ul class="doc-list">{li(c['limits'])}</ul></div>
-    </div>
-  </section>
-  <section class="section" aria-labelledby="notice-title">
-    <div class="wrap"><h2 id="notice-title">{c['h_notice']}</h2><div class="notice">{notice}</div></div>
-  </section>
-  <section class="contact" aria-labelledby="corr-title">
-    <div class="wrap corrections"><div><h2 id="corr-title">{c['h_corr']}</h2><p>{c['corr']}</p></div><a class="button" href="mailto:{EMAIL}?subject=Data%20correction">{EMAIL} <span aria-hidden="true">↗</span></a></div>
-  </section>
-</main>
-'''
-    return head(lang, 'data', c['title'], c['description']) + header(lang, 'data') + body + footer(lang)
 
 
 # ---------------------------------------------------------------- GAIA (today's page)
@@ -681,7 +564,7 @@ def privacy_forward():
 
 
 def main():
-    builders = {'home': home, 'terrax': terrax, 'gaia': gaia, 'data': data_sources, 'privacy': privacy}
+    builders = {'home': home, 'terrax': terrax, 'gaia': gaia, 'privacy': privacy}
     for lang in ('en', 'el'):
         for page, build in builders.items():
             out = ROOT / url(lang, page).lstrip('/') / 'index.html'

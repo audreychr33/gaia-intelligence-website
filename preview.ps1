@@ -34,7 +34,7 @@ try {
             $relative = [Uri]::UnescapeDataString(($parts[1] -split '\?')[0]).TrimStart('/')
             if (-not $relative -or $relative.EndsWith('/')) { $relative = "${relative}index.html" }
             # Only public site files, never Git metadata or local documents.
-            $allowed = $relative -match '^((?:el/)?(?:(?:terrax|gaia|data-sources|privacy)/)?index\.html|privacy\.html|sitemap\.xml|favicon(?:-\d+)?\.(png|ico)|assets/(?:[a-z0-9-]+/)?[a-zA-Z0-9_.-]+\.(png|css|js|ttf|webp|woff2|txt))$'
+            $allowed = $relative -match '^((?:el/)?(?:(?:terrax|gaia|privacy)/)?index\.html|privacy\.html|sitemap\.xml|favicon(?:-\d+)?\.(png|ico)|assets/(?:[a-z0-9-]+/)?[a-zA-Z0-9_.-]+\.(png|css|js|ttf|webp|woff2|txt))$'
             $status = '404 Not Found'
             $type = 'text/plain; charset=utf-8'
             $body = [Text.Encoding]::UTF8.GetBytes('Not found')
