@@ -14,7 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE = 'https://axgaiaintelligence.com'
 EMAIL = 'info@axgaiaintelligence.com'
 # The Ter-AX application (its own server). Publish the site only once this address works.
-APP_URL = 'https://app.axgaiaintelligence.com/app/select'
+APP_URL = 'https://tx.axgaiaintelligence.com/app/select'
+SHOW_REPORT = False  # the report section of the Ter-AX page; hidden for now (user, 20/11/2026), comes back later
 CSP = ("default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; "
        "form-action 'none'; object-src 'none'; frame-src 'none'; connect-src 'none';")
 
@@ -228,7 +229,7 @@ def home(lang):
         <article class="product-card">
           <img src="/assets/terrax/overview-{lang}.webp" alt="{c['tx_alt']}" width="2400" height="1500" loading="lazy">
           <div class="product-body">
-            <div class="product-title"><h3>Terr<em>AX</em></h3><span class="badge badge-live">{c['live']}</span></div>
+            <div class="product-title"><h3>Ter-<em>AX</em></h3><span class="badge badge-live">{c['live']}</span></div>
             <span class="product-kicker">{c['tx_kicker']}</span>
             <p>{c['tx_text']}</p>
             <div class="product-actions"><a class="button primary" href="{APP_URL}">{T[lang]['open_tx']} <span aria-hidden="true">↗</span></a><a class="button" href="{url(lang, 'terrax')}">{c['tx_cta']} <span aria-hidden="true">→</span></a></div>
@@ -338,6 +339,17 @@ def terrax(lang):
     gets = ''.join(f'<article><span class="icon-box">{icon(i)}</span><h3>{h}</h3><p>{p}</p></article>' for i, h, p in c['g'])
     steps = ''.join(f'<li><span>{n}</span><h3>{h}</h3><p>{p}</p></li>' for n, h, p in c['s'])
     report = ''.join(f'<li>{x}</li>' for x in c['r'])
+    report_section = f'''  <section id="report" class="section" aria-labelledby="report-title">
+    <div class="wrap">
+      <div class="report-grid">
+        <div><p class="eyebrow">{c['r_eyebrow']}</p><h2 id="report-title">{c['r_h2']}</h2><p class="section-intro">{c['r_note']}</p></div>
+        <ol class="report-list">{report}</ol>
+      </div>
+      <div class="report-paper"><img src="/assets/terrax/report-{lang}.webp" alt="{c['r_alt']}" width="2000" height="1696" loading="lazy"></div>
+    </div>
+  </section>''' if SHOW_REPORT else ''
+    see_button = f'''<a class="button" href="#report">{c['see']} <span aria-hidden="true">↓</span></a>''' if SHOW_REPORT else ''
+    who_eyebrow = c['w_eyebrow'] if SHOW_REPORT else c['w_eyebrow'].replace('04 /', '03 /')
     who = ''.join(f'<article><span class="icon-box">{icon(i)}</span><h3>{h}</h3><p>{p}</p></article>' for i, h, p in c['w'])
     body = f'''<main id="top" tabindex="-1">
   <section class="tx-hero" aria-labelledby="hero-title">
@@ -346,7 +358,7 @@ def terrax(lang):
         <p class="eyebrow"><span class="status-dot"></span>{c['eyebrow']}</p>
         <h1 id="hero-title">{c['h1']}</h1>
         <p class="lead">{c['lead']}</p>
-        <div class="actions"><a class="button primary" href="{APP_URL}">{c['cta']} <span aria-hidden="true">↗</span></a><a class="button" href="#report">{c['see']} <span aria-hidden="true">↓</span></a></div>
+        <div class="actions"><a class="button primary" href="{APP_URL}">{c['cta']} <span aria-hidden="true">↗</span></a>{see_button}</div>
         <p class="fine">{c['fine']}</p>
       </div>
       <figure><img class="shot" src="/assets/terrax/overview-{lang}.webp" alt="{c['shot_alt']}" width="2400" height="1500"></figure>
@@ -367,19 +379,11 @@ def terrax(lang):
     </div>
   </section>
 
-  <section id="report" class="section" aria-labelledby="report-title">
-    <div class="wrap">
-      <div class="report-grid">
-        <div><p class="eyebrow">{c['r_eyebrow']}</p><h2 id="report-title">{c['r_h2']}</h2><p class="section-intro">{c['r_note']}</p></div>
-        <ol class="report-list">{report}</ol>
-      </div>
-      <div class="report-paper"><img src="/assets/terrax/report-{lang}.webp" alt="{c['r_alt']}" width="2000" height="1696" loading="lazy"></div>
-    </div>
-  </section>
+{report_section}
 
   <section class="impact section" aria-labelledby="who-title">
     <div class="wrap">
-      <div class="section-head"><p class="eyebrow">{c['w_eyebrow']}</p><h2 id="who-title">{c['w_h2']}</h2></div>
+      <div class="section-head"><p class="eyebrow">{who_eyebrow}</p><h2 id="who-title">{c['w_h2']}</h2></div>
       <div class="impact-cards">{who}</div>
     </div>
   </section>
@@ -589,7 +593,7 @@ PRIVACY = {
             ('1. Who we are', [
                 'AX GAIA Intelligence Ltd, a company registered in Cyprus, is the controller of the personal data described here.',
                 f'Contact for any privacy question: <a href="mailto:{EMAIL}">{EMAIL}</a>.',
-                'This policy covers this website and email sent to us. The Ter-AX application at <a href="https://app.axgaiaintelligence.com/">app.axgaiaintelligence.com</a> has its own <a href="https://app.axgaiaintelligence.com/privacy">Privacy Policy</a> and <a href="https://app.axgaiaintelligence.com/terms">Terms of Use</a>.']),
+                'This policy covers this website and email sent to us. The Ter-AX application at <a href="https://tx.axgaiaintelligence.com/">tx.axgaiaintelligence.com</a> has its own <a href="https://tx.axgaiaintelligence.com/privacy">Privacy Policy</a> and <a href="https://tx.axgaiaintelligence.com/terms">Terms of Use</a>.']),
             ('2. What we process and why', [
                 '<strong>When you visit the website.</strong> Our hosting provider processes technical data such as your IP address, browser and device type, the pages requested and the time, to deliver the pages and keep the service secure. We do not receive or keep these records. Legal basis: our legitimate interest in running a secure website (GDPR Article 6(1)(f)).',
                 '<strong>When you email us.</strong> We use your email address, your name and whatever you write, to reply and to deal with your request. Legal basis: steps you ask for before a possible agreement (Article 6(1)(b)) and our legitimate interest in answering enquiries (Article 6(1)(f)).']),
@@ -620,7 +624,7 @@ PRIVACY = {
             ('1. Ποιοι είμαστε', [
                 'Υπεύθυνη επεξεργασίας των προσωπικών δεδομένων που περιγράφονται εδώ είναι η AX GAIA Intelligence Ltd, εταιρεία εγγεγραμμένη στην Κύπρο.',
                 f'Για κάθε ερώτηση σχετικά με το απόρρητο: <a href="mailto:{EMAIL}">{EMAIL}</a>.',
-                'Η πολιτική καλύπτει αυτή την ιστοσελίδα και τα email που μας στέλνετε. Η εφαρμογή Ter-AX στο <a href="https://app.axgaiaintelligence.com/">app.axgaiaintelligence.com</a> έχει δική της <a href="https://app.axgaiaintelligence.com/privacy">Πολιτική Απορρήτου</a> και <a href="https://app.axgaiaintelligence.com/terms">Όρους Χρήσης</a>.']),
+                'Η πολιτική καλύπτει αυτή την ιστοσελίδα και τα email που μας στέλνετε. Η εφαρμογή Ter-AX στο <a href="https://tx.axgaiaintelligence.com/">tx.axgaiaintelligence.com</a> έχει δική της <a href="https://tx.axgaiaintelligence.com/privacy">Πολιτική Απορρήτου</a> και <a href="https://tx.axgaiaintelligence.com/terms">Όρους Χρήσης</a>.']),
             ('2. Τι επεξεργαζόμαστε και γιατί', [
                 '<strong>Όταν επισκέπτεστε την ιστοσελίδα.</strong> Ο πάροχος φιλοξενίας επεξεργάζεται τεχνικά στοιχεία, όπως τη διεύθυνση IP, τον τύπο browser και συσκευής, τις σελίδες που ζητήθηκαν και την ώρα, για να εμφανίσει τις σελίδες και να κρατήσει την υπηρεσία ασφαλή. Εμείς δεν λαμβάνουμε ούτε κρατάμε αυτά τα αρχεία. Νομική βάση: το έννομο συμφέρον μας να λειτουργεί η ιστοσελίδα με ασφάλεια (άρθρο 6(1)(στ) ΓΚΠΔ).',
                 '<strong>Όταν μας στέλνετε email.</strong> Χρησιμοποιούμε τη διεύθυνση email, το όνομά σας και ό,τι μας γράψετε, για να σας απαντήσουμε και να ικανοποιήσουμε το αίτημά σας. Νομική βάση: ενέργειες που ζητάτε πριν από πιθανή συμφωνία (άρθρο 6(1)(β)) και το έννομο συμφέρον μας να απαντάμε σε ερωτήματα (άρθρο 6(1)(στ)).']),
