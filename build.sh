@@ -3,5 +3,5 @@
 set -eu
 rm -rf dist
 mkdir -p dist
-cp index.html privacy.html sitemap.xml favicon*.png favicon.ico _headers dist/
+cp index.html privacy.html sitemap.xml favicon*.png favicon.ico _headers CNAME dist/
 cp -R terrax gaia privacy el assets dist/
