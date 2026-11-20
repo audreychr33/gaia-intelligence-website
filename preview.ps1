@@ -11,6 +11,10 @@ $types = @{
     '.png' = 'image/png'
     '.ico' = 'image/x-icon'
     '.ttf' = 'font/ttf'
+    '.webp' = 'image/webp'
+    '.woff2' = 'font/woff2'
+    '.xml' = 'application/xml; charset=utf-8'
+    '.txt' = 'text/plain; charset=utf-8'
 }
 $listener.Start()
 Write-Host "Development preview: http://localhost:$Port"
@@ -28,9 +32,9 @@ try {
             $parts = $request.Split(' ')
             $method = $parts[0]
             $relative = [Uri]::UnescapeDataString(($parts[1] -split '\?')[0]).TrimStart('/')
-            if (-not $relative) { $relative = 'index.html' }
+            if (-not $relative -or $relative.EndsWith('/')) { $relative = "${relative}index.html" }
             # Only public site files, never Git metadata or local documents.
-            $allowed = $relative -match '^(index\.html|privacy\.html|favicon(?:-\d+)?\.(png|ico)|assets/[a-zA-Z0-9_-]+\.(png|css|js|ttf))$'
+            $allowed = $relative -match '^((?:el/)?(?:(?:terrax|gaia|privacy)/)?index\.html|privacy\.html|sitemap\.xml|favicon(?:-\d+)?\.(png|ico)|assets/(?:[a-z0-9-]+/)?[a-zA-Z0-9_.-]+\.(png|css|js|ttf|webp|woff2|txt))$'
             $status = '404 Not Found'
             $type = 'text/plain; charset=utf-8'
             $body = [Text.Encoding]::UTF8.GetBytes('Not found')
